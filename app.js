@@ -1,14 +1,13 @@
 const express = require('express');
+const path = require('path');
 const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
-
-const { favoriteRouter } = require('./routes/api');
-
-const path = require('path');
 const { HttpError } = require(path.join(__dirname, 'helpers'));
 
+const { favoriteRouter } = require('./routes/api');
 const { recipesRouter } = require(path.join(__dirname, 'routes', 'api'));
+const { shoppingListRouter } = require('./routes/api');
 
 const app = express();
 
@@ -20,6 +19,7 @@ app.use(express.json());
 
 app.use('/recipes', recipesRouter);
 app.use('/api/favorite', favoriteRouter);
+app.use('/api/shopping-list', shoppingListRouter);
 
 app.use((error, req, res, next) => {
   if (HttpError) {
