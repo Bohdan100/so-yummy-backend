@@ -12,6 +12,8 @@ const { isValidId } = require('../../middlewares');
 
 const { recipes: ctrl } = require('../../controllers');
 
+router.get('/', ctrl.getRecipesByFourCategories);
+
 router.get('/category-list', ctrl.getCategoriesList);
 
 router.get('/:recipeId', isValidId, ctrl.getRecipeById);
