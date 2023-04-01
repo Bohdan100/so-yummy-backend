@@ -3,12 +3,13 @@ const { ctrlWrapper } = require(path.join(__dirname, '..', '..', 'helpers'));
 
 const { getCategoriesList } = require('./getCategoryList');
 
-const getRecepieById = require('./getRecepieById');
+const getRecipeById = require('./getRecipeById');
 
-const getRecepiesByCategory = require('./getRecepiesByCategory');
+const getRecipesByCategory = require('./getRecipesByCategory');
+
 
 module.exports = {
   getCategoriesList: ctrlWrapper(getCategoriesList),
-  getRecepieById: ctrlWrapper(getRecepieById),
-  getRecepiesByCategory: ctrlWrapper(getRecepiesByCategory),
+  getRecipeById: ctrlWrapper(getRecipeById),
+  getRecipesByCategory: ctrlWrapper(getRecipesByCategory),
 };
