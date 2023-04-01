@@ -1,4 +1,5 @@
 const User = require("./user");
 const Contact = require("./contact");
+const ShoppingList = require("./shoppingList");
 
-module.exports = { User, Contact };
+module.exports = { User, Contact, ShoppingList };

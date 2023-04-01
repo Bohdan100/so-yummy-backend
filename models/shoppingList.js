@@ -1,0 +1,35 @@
+const { Schema, model } = require("mongoose");
+
+const { MongooseError } = require("../helpers");
+
+const shoppingListSchema = new Schema(
+  {
+    userId: {
+      type: String,
+      required: true,
+    },
+    strIngredient: {
+      type: String,
+      require: true,
+    },
+    weight: {
+      type: String,
+      require: true,
+    },
+    image: {
+      type: String,
+      require: true,
+    },
+    recipeId: {
+      type: String,
+      require: true,
+    },
+  },
+  { versionKey: false }
+);
+
+shoppingListSchema.post("save", MongooseError);
+
+const ShoppingList = model("shoppingList", shoppingListSchema);
+
+module.exports = ShoppingList;
