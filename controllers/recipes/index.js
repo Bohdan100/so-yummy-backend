@@ -1,13 +1,12 @@
-const path = require('path');
-const { ctrlWrapper } = require(path.join(__dirname, '..', '..', 'helpers'));
-
-const { getCategoriesList } = require('./getCategoryList');
+const { ctrlWrapper } = require('../../helpers');
 
 const getRecipeById = require('./getRecipeById');
 
 const getRecipesByCategory = require('./getRecipesByCategory');
 
 const getRecipesByFourCategories = require('./getRecipesByFourCategories');
+
+const getCategoriesList = require('./getCategoriesList');
 
 module.exports = {
   getCategoriesList: ctrlWrapper(getCategoriesList),
