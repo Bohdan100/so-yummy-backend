@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/recipes", recipesRouter);
-app.use("/shopping-list", shoppingListRouter);
+app.use("/api/shopping-list", shoppingListRouter);
 
 app.use((error, req, res, next) => {
   if (HttpError) {

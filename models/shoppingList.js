@@ -4,8 +4,9 @@ const { MongooseError } = require("../helpers");
 
 const shoppingListSchema = new Schema(
   {
-    userId: {
-      type: String,
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
       required: true,
     },
     strIngredient: {
@@ -30,6 +31,6 @@ const shoppingListSchema = new Schema(
 
 shoppingListSchema.post("save", MongooseError);
 
-const ShoppingList = model("shoppingList", shoppingListSchema);
+const ShoppingList = model("shoppinglist", shoppingListSchema);
 
 module.exports = ShoppingList;

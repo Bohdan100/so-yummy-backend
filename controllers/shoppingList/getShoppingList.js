@@ -1,12 +1,9 @@
 const { ShoppingList } = require("../../models");
 
 const getShoppingList = async (req, res, next) => {
-  const shoppingList = await ShoppingList.find(
-    { userId: req.user._id },
-    "-userId"
-  );
-
-  res.json(shoppingList);
+  const { _id: owner } = req.user;
+  const result = await ShoppingList.find({ owner });
+  res.json(result);
 };
 
 module.exports = getShoppingList;
