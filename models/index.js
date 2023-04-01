@@ -1,4 +1,6 @@
-const User = require("./user");
-const Contact = require("./contact");
+const User = require('./user');
 
-module.exports = { User, Contact };
+const { Recipe } = require('./recipe');
+const { Ingredient } = require('./ingredient');
+
+module.exports = { User, Recipe, Ingredient };
