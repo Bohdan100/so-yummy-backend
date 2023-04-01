@@ -7,6 +7,7 @@ const path = require("path");
 const { HttpError } = require(path.join(__dirname, "helpers"));
 
 const { recipesRouter } = require(path.join(__dirname, "routes", "api"));
+const { shoppingListRouter } = require("./routes/api");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/recipes", recipesRouter);
+app.use("/api/shopping-list", shoppingListRouter);
 
 app.use((error, req, res, next) => {
   if (HttpError) {
