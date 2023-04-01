@@ -18,6 +18,6 @@ const userFavoriteSchema = Schema(
 
 userFavoriteSchema.post('save', MongooseError);
 
-const UserFavorite = model('userFavorite', userFavoriteSchema);
+const UserFavorite = model('userfavorite', userFavoriteSchema);
 
 module.exports = UserFavorite;

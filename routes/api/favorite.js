@@ -1,16 +1,16 @@
 const express = require('express');
-const router = express.Router();
 const { favorite: ctrl } = require('../../controllers');
+const { auth } = require('../../middlewares');
 
-// Мне нужна миделвара auth! Которая должна быть перед каждым контролером
+const router = express.Router();
 
 // Получение всех любимых рецептов авторизированного юзера
-router.get('/', ctrl.getFaforites);
+router.get('/', auth, ctrl.getFavorites);
 
 // Добавление рецепта в любимые блюда авторизированного юзера
-router.post('/:recipeId', ctrl.addFavorite);
+router.post('/:recipeId', auth, ctrl.addFavorite);
 
 // Удаление рецепта из списка любимых
-router.delete('/:recipeId', ctrl.deleteFavorite);
+router.delete('/:recipeId', auth, ctrl.deleteFavorite);
 
 module.exports = router;

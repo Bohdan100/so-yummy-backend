@@ -2,9 +2,7 @@ const { UserFavorite, RecipeFavorite } = require('../../models');
 const { HttpError } = require('../../helpers');
 
 const addFavorite = async (req, res) => {
-  // const userId = '6427f577a691f46607d4d164'; // для проверки
-  const userId = '6428209efafa1b26fbbf8cdd';
-  //   const { _id: userId } = req.user;
+  const { _id: userId } = req.user;
   const { recipeId } = req.params;
 
   const userFavorite = await UserFavorite.findOne({ userId, recipeId });

@@ -2,14 +2,10 @@ const { UserFavorite, RecipeFavorite } = require('../../models');
 const { HttpError } = require('../../helpers');
 
 const deleteFavorite = async (req, res) => {
-  //   const { _id: userId } = req.user;
-  // const userId = '6427f577a691f46607d4d164';
-  const userId = '6428209efafa1b26fbbf8cdd';
-
+  const { _id: userId } = req.user;
   const { recipeId } = req.params;
 
   const userFavorite = await UserFavorite.findOneAndDelete({ recipeId, userId });
-  console.log(userFavorite);
 
   if (!userFavorite) {
     throw HttpError(404, `There is no such recipe with id ${recipeId}`);

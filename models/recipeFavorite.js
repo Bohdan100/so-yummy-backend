@@ -17,6 +17,6 @@ const recipeFavoriteSchema = Schema(
 
 recipeFavoriteSchema.post('save', MongooseError);
 
-const RecipeFavorite = model('recipeFavorite', recipeFavoriteSchema);
+const RecipeFavorite = model('recipefavorite', recipeFavoriteSchema);
 
 module.exports = RecipeFavorite;
