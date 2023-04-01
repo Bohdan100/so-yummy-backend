@@ -1,3 +1,4 @@
-const recipesRouter = require("./recipes");
+const recipesRouter = require('./recipes');
+const favoriteRouter = require('./favorite');
 
-module.exports = { recipesRouter };
+module.exports = { recipesRouter, favoriteRouter };

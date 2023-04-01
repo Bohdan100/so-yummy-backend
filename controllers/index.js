@@ -1,3 +1,7 @@
-const recipes = require("./recipes");
+const recipes = require('./recipes');
+const favorite = require('./favorite');
 
-module.exports = { recipes };
+module.exports = {
+  recipes,
+  favorite,
+};
