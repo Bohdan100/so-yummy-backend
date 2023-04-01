@@ -1,4 +1,4 @@
-const { ctrlWrapper } = require("../../helpers/ctrlWrapper");
+const { ctrlWrapper } = require("../../helpers");
 const getShoppingList = require("./getShoppingList");
 const addShoppingList = require("./addShoppingList");
 const deleteShoppingList = require("./deleteShoppingList");
