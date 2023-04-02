@@ -3,7 +3,7 @@ const { Ingredient } = require('../../models');
 
 const { HttpError } = require('../../helpers');
 
-const getRecepieById = async (req, res) => {
+const getRecipeById = async (req, res) => {
   const { recipeId } = req.params;
 
   const data = await Recipe.findById(recipeId, null, { lean: true }).populate({
@@ -12,10 +12,15 @@ const getRecepieById = async (req, res) => {
   });
 
   if (!data) {
-    throw HttpError(404, 'Not found');
+    throw HttpError(404, `Recipe with  id: ${recipeId} was not found`);
   }
 
-  res.json(data);
+  res.status(200).json({
+    status: 'success',
+    code: 200,
+    message: `Recipe with  id: ${recipeId} was found`,
+    recipe: data,
+  });
 };
 
-module.exports = getRecepieById;
+module.exports = getRecipeById;

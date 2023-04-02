@@ -1,12 +1,12 @@
-const { isValidObjectId } = require("mongoose");
+const { isValidObjectId } = require('mongoose');
 
-const path = require("path");
-const { HttpError } = require(path.join(__dirname, "..", "helpers"));
+const path = require('path');
+const { HttpError } = require(path.join(__dirname, '..', 'helpers'));
 
 const isValidId = (req, res, next) => {
-  const { recipetId } = req.params;
-  if (!isValidObjectId(recipetId)) {
-    next(HttpError(400, `${recipetId} is not valid id`));
+  const { recipeId } = req.params;
+  if (!isValidObjectId(recipeId)) {
+    next(HttpError(400, `${recipeId} is not valid id`));
   }
   next();
 };
