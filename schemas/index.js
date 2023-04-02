@@ -1,4 +1,5 @@
 const addShoppingListSchema = require("./addShoppingListSchema");
+const subscribeUserSchema = require("./subscribeUserSchema");
 const validateRecipe = require("./validateRecipe");
 const {
   requestBodySchema,
@@ -12,4 +13,5 @@ module.exports = {
   requestBodySchema,
   userAuthSchema,
   subscriptionStatusSchema,
+  subscribeUserSchema,
 };

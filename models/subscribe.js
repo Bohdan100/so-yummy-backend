@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
-
 const { MongooseError } = require("../helpers");
+
+const emailRegexp = /^\S+@\S+\.\S+$/;
 
 const subscribeSchema = new Schema(
   {
@@ -9,21 +10,11 @@ const subscribeSchema = new Schema(
       ref: "user",
       required: true,
     },
-    strIngredient: {
+    email: {
       type: String,
-      require: true,
-    },
-    weight: {
-      type: String,
-      require: true,
-    },
-    image: {
-      type: String,
-      require: true,
-    },
-    recipeId: {
-      type: String,
-      require: true,
+      match: emailRegexp,
+      required: [true, "Email is required"],
+      unique: true,
     },
   },
   { versionKey: false }

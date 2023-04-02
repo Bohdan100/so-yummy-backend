@@ -8,7 +8,7 @@ const { HttpError } = require("./helpers");
 const { authRouter } = require("./routes/api");
 const { recipesRouter } = require("./routes/api");
 const { favoriteRouter } = require("./routes/api");
-const { shoppingListRouter } = require("./routes/api");
+const { shoppingListRouter, subscribeRouter } = require("./routes/api");
 const { ownRecipesRouter } = require("./routes/api");
 const { ingredientsRouter } = require("./routes/api");
 
@@ -26,6 +26,8 @@ app.use("/api/favorite", favoriteRouter);
 app.use("/api/shopping-list", shoppingListRouter);
 app.use("/api/ownRecipe", ownRecipesRouter);
 app.use("/api/ingredients", ingredientsRouter);
+
+app.use("/api/subscribe", subscribeRouter);
 
 app.use((error, req, res, next) => {
   if (HttpError) {
