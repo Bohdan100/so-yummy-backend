@@ -8,7 +8,7 @@ const {
   logout,
   getCurrent,
   subscriptionStatusUpdate,
-} = require("../../controllers/auth.controller");
+} = require("../../controllers/auth");
 
 const { userAuthSchema, subscriptionStatusSchema } = require("../../schemas");
 
