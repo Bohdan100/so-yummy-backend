@@ -38,7 +38,6 @@ const getRecipesByFourCategories = async (req, res) => {
   res.status(200).json({
     status: 'success',
     code: 200,
-    message: `Recipes for categories: 'Breakfast', 'Vegan', 'Miscellaneous', 'Dessert'  were found`,
     recipes: { breakfast, vegan, miscellaneous, dessert },
   });
 };
