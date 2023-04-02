@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
-const { User } = require("../models");
+const { User } = require("../../models");
 const {
   createConflictError,
   createAuthError,
   createCustomError,
 } = require("../../helpers/authError");
-const { SECRET_KEY } = require("../config");
+const { SECRET_KEY } = process.env;
 
 const signup = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
