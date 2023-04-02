@@ -24,5 +24,10 @@ router.patch(
   validateBody(subscriptionStatusSchema),
   ctrlWrapper(subscriptionStatusUpdate)
 );
+router.post(
+  "/current/subscribe",
+  validateBody(userAuthSchema),
+  ctrlWrapper(login)
+);
 
 module.exports = router;
