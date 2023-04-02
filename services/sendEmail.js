@@ -18,6 +18,7 @@ const transport = nodemailer.createTransport(nodemaoilerConfig);
 const sendEmail = async (data) => {
   const email = { ...data, from: "so-yummy-pg3@outlook.com" };
   await transport.sendMail(email);
+
   return true;
 };
 
