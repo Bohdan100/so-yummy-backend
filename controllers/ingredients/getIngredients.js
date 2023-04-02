@@ -1,11 +1,12 @@
-const Recipe = require("../../models/recipe");
-const Ingredients = require("../../models/ingredient");
+const { Recipe } = require("../../models/recipe");
+const { Ingredient } = require("../../models/ingredient");
+const { setPaginationSlice } = require("../../helpers");
 const { HttpError } = require("../../helpers");
 
 const getIngredients = async (req, res) => {
   const { query } = req.params;
 
-  const ingredient = await Ingredients.findOne({
+  const ingredient = await Ingredient.findOne({
     ttl: { $regex: query, $options: "i" },
   });
 
@@ -20,7 +21,18 @@ const getIngredients = async (req, res) => {
   if (!recipes) {
     throw HttpError(`Recipes with ${query} not found`);
   }
-  res.status(200).json(ingredient);
+
+  const { page = 1, per_page = recipes.length } = req.query;
+
+  const pagination = setPaginationSlice(page, per_page, recipes.length);
+  if (!pagination) {
+    throw HttpError(400, "Incorrect pagination params");
+  }
+
+  res.status(200).json({
+    totalHits: recipes.length,
+    meals: recipes.slice(pagination.start, pagination.end),
+  });
 };
 
 module.exports = getIngredients;

@@ -8,6 +8,7 @@ const getIngredientsList = async (req, res) => {
   if (!ingredient) {
     throw HttpError(404, "Ingredients not found");
   }
+
   res.status(200).json(ingredient);
 };
 
