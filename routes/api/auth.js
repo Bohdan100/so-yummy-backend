@@ -1,30 +1,28 @@
 const express = require("express");
 
-const { tryCatchWrapper } = require("../../middleware");
+const { auth, validateBody } = require("../../middlewares");
+const { ctrlWrapper } = require("../../helpers");
 const {
+  signup,
   login,
   logout,
-  signup,
   getCurrent,
   subscriptionStatusUpdate,
 } = require("../../controllers/auth.controller");
-const { validation, auth } = require("../../middleware");
-const {
-  userAuthSchema,
-  subscriptionStatusSchema,
-} = require("../../validationSchemas");
+
+const { userAuthSchema, subscriptionStatusSchema } = require("../../schemas");
 
 const router = express.Router();
 
-router.post("/signup", validation(userAuthSchema), tryCatchWrapper(signup));
-router.post("/login", validation(userAuthSchema), tryCatchWrapper(login));
-router.get("/current", auth, tryCatchWrapper(getCurrent));
-router.get("/logout", auth, tryCatchWrapper(logout));
+router.post("/signup", validateBody(userAuthSchema), ctrlWrapper(signup));
+router.post("/login", validateBody(userAuthSchema), ctrlWrapper(login));
+router.get("/current", auth, ctrlWrapper(getCurrent));
+router.get("/logout", auth, ctrlWrapper(logout));
 router.patch(
   "/",
   auth,
-  validation(subscriptionStatusSchema),
-  tryCatchWrapper(subscriptionStatusUpdate)
+  validateBody(subscriptionStatusSchema),
+  ctrlWrapper(subscriptionStatusUpdate)
 );
 
 module.exports = router;

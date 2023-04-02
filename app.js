@@ -1,10 +1,9 @@
-const path = require("path");
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 
-const { HttpError } = require(path.join(__dirname, "helpers"));
+const { HttpError } = require("./helpers");
 
 const { authRouter } = require("./routes/api");
 const { recipesRouter } = require("./routes/api");
