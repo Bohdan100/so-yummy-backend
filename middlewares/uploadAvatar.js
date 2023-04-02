@@ -4,7 +4,7 @@ const multer = require('multer');
 const { nanoid } = require('nanoid');
 const { HttpError } = require('../helpers');
 
-const USER_RECIPE_PIC_PARAMS = {
+const USER_AVATAR_PIC_PARAMS = {
   dimensions: {
     width: 280,
     height: 270,
@@ -18,20 +18,21 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
-const storageRecipe = new CloudinaryStorage({
+const storageAvatar = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: (req, file) => {
     const { _id } = req.user;
     const imgID = nanoid(5);
-    const recipeName = `${_id}_${imgID}_recipe`;
+    const avatarName = `${_id}_${imgID}_recipe`;
+
     return {
-      folder: 'assets/own_recipes_photos',
-      allowed_formats: USER_RECIPE_PIC_PARAMS.acceptableFileTypes,
-      public_id: recipeName,
+      folder: 'assets/avatars_photos',
+      allowed_formats: USER_AVATAR_PIC_PARAMS.acceptableFileTypes,
+      public_id: avatarName,
       transformation: [
         {
-          height: USER_RECIPE_PIC_PARAMS.dimensions.height,
-          width: USER_RECIPE_PIC_PARAMS.dimensions.width,
+          height: USER_AVATAR_PIC_PARAMS.dimensions.height,
+          width: USER_AVATAR_PIC_PARAMS.dimensions.width,
           crop: 'fill',
         },
       ],
@@ -51,6 +52,6 @@ function fileFilter(req, file, cb) {
   }
 }
 
-const uploadCloud = multer({ storage: storageRecipe, fileFilter });
+const uploadCloud = multer({ storage: storageAvatar, fileFilter });
 
-module.exports = { uploadCloud: uploadCloud.single('preview') };
+module.exports = { uploadCloud: uploadCloud.single('avatar') };
