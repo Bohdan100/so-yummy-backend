@@ -1,7 +1,5 @@
 const { isValidObjectId } = require('mongoose');
-
-const path = require('path');
-const { HttpError } = require(path.join(__dirname, '..', 'helpers'));
+const { HttpError } = require('../helpers');
 
 const isValidId = (req, res, next) => {
   const { recipeId } = req.params;

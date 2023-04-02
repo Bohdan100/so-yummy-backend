@@ -4,6 +4,7 @@ const shoppingList = require('./shoppingList');
 const ownRecipes = require('./ownRecipes');
 const ingredients = require('./ingredients');
 const popularRecipes = require('./popularRecipes');
+const auth = require('./auth');
 
 module.exports = {
   recipes,
@@ -12,4 +13,5 @@ module.exports = {
   ownRecipes,
   ingredients,
   popularRecipes,
+  auth,
 };

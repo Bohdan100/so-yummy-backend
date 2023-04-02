@@ -1,18 +1,19 @@
-const path = require('path');
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
 
-const { HttpError } = require(path.join(__dirname, 'helpers'));
+const { HttpError } = require('./helpers');
 
-const { authRouter } = require('./routes/api');
-const { recipesRouter } = require('./routes/api');
-const { favoriteRouter } = require('./routes/api');
-const { shoppingListRouter } = require('./routes/api');
-const { ownRecipesRouter } = require('./routes/api');
-const { ingredientsRouter } = require('./routes/api');
-const { popularRecipesRouter } = require('./routes/api');
+const {
+  authRouter,
+  recipesRouter,
+  favoriteRouter,
+  shoppingListRouter,
+  ownRecipesRouter,
+  ingredientsRouter,
+  popularRecipesRouter,
+} = require('./routes/api');
 
 const app = express();
 
