@@ -1,28 +1,15 @@
-const express = require("express");
-
-const { auth, validateBody } = require("../../middlewares");
-const { ctrlWrapper } = require("../../helpers");
-const {
-  signup,
-  login,
-  logout,
-  getCurrent,
-  subscriptionStatusUpdate,
-} = require("../../controllers/auth");
-
-const { userAuthSchema, subscriptionStatusSchema } = require("../../schemas");
+const express = require('express');
+const { auth: ctrl } = require('../../controllers');
+const { auth, validateBody } = require('../../middlewares');
+const { userJoiRegisterSchema, userJoiLoginSchema, userJoiSchemaUpdate } = require('../../schemas');
+const { uploadCloud } = require('../../middlewares/uploadAvatar');
 
 const router = express.Router();
 
-router.post("/signup", validateBody(userAuthSchema), ctrlWrapper(signup));
-router.post("/login", validateBody(userAuthSchema), ctrlWrapper(login));
-router.get("/current", auth, ctrlWrapper(getCurrent));
-router.get("/logout", auth, ctrlWrapper(logout));
-router.patch(
-  "/",
-  auth,
-  validateBody(subscriptionStatusSchema),
-  ctrlWrapper(subscriptionStatusUpdate)
-);
+router.post('/signup', validateBody(userJoiRegisterSchema), ctrl.signup);
+router.post('/login', validateBody(userJoiLoginSchema), ctrl.login);
+router.get('/current', auth, ctrl.getCurrentUser);
+router.get('/logout', auth, ctrl.logout);
+router.patch('/edit', auth, uploadCloud, validateBody(userJoiSchemaUpdate), ctrl.updateUser);
 
 module.exports = router;

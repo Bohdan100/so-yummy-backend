@@ -6,8 +6,6 @@ const MongooseError = require('./MongooseError');
 
 const setPaginationSlice = require('./setPaginationSlice');
 
-const authError = require('./authError');
-
 const getPreparedObj = require('./getPreparedObj');
 
 const getSkipLimitPage = require('./getSkipLimitPage');
@@ -18,7 +16,6 @@ module.exports = {
   ctrlWrapper,
   HttpError,
   MongooseError,
-  authError,
   getPreparedObj,
   getSkipLimitPage,
   getListRecipe,

@@ -1,27 +1,31 @@
-const bcrypt = require("bcrypt");
-const { Schema, model } = require("mongoose");
-
-const path = require("path");
-const { MongooseError } = require(path.join(__dirname, "..", "helpers"));
-
-const emailRegexp = /^\S+@\S+\.\S+$/;
+const { Schema, model } = require('mongoose');
+const { MongooseError } = require('../helpers');
 
 const userSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: [true, 'Name is required'],
+    },
     email: {
       type: String,
-      match: emailRegexp,
-      required: [true, "Email is required"],
+      required: [true, 'Email is required'],
       unique: true,
+      validate: {
+        validator: function (v) {
+          return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v);
+        },
+        message: 'Please enter a valid email',
+      },
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, 'Password is required'],
     },
-    subscription: {
+    avatar: {
       type: String,
-      enum: ["starter", "pro", "business"],
-      default: "starter",
+      required: true,
+      default: 'https://res.cloudinary.com/ddbvbv5sp/image/upload/v1679336722/images_s8wrdd.jpg',
     },
     token: {
       type: String,
@@ -31,18 +35,8 @@ const userSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-userSchema.pre("save", async function () {
-  if (this.isNew) {
-    this.password = await bcrypt.hash(this.password, bcrypt.genSaltSync(10));
-  }
-});
+userSchema.post('save', MongooseError);
 
-userSchema.methods.comparePassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
-};
-
-userSchema.post("save", MongooseError);
-
-const User = model("user", userSchema);
+const User = model('user', userSchema);
 
 module.exports = User;
