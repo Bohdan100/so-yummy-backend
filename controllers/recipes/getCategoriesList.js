@@ -11,4 +11,4 @@ const getCategoriesList = async (req, res) => {
   return res.status(200).json({ categoriesList: categoriesList.sort() });
 };
 
-module.exports = { getCategoriesList };
+module.exports = getCategoriesList;
