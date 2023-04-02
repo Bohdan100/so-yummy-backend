@@ -1,7 +1,9 @@
-const ctrlWrapper = require("./ctrlWrapper");
+const ctrlWrapper = require('./ctrlWrapper');
 
-const HttpError = require("./HttpError");
+const HttpError = require('./HttpError');
 
-const MongooseError = require("./MongooseError");
+const MongooseError = require('./MongooseError');
 
-module.exports = { ctrlWrapper, HttpError, MongooseError };
+const setPaginationSlice = require('./setPaginationSlice');
+
+module.exports = { ctrlWrapper, HttpError, MongooseError, setPaginationSlice };

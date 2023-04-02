@@ -3,16 +3,17 @@ const { MongooseError } = require('../helpers');
 
 const recipeFavoriteSchema = Schema(
   {
-    recipeId: {
-      type: String,
-      required: [true, 'Recipe id is required'],
+    recipe: {
+      type: Schema.Types.ObjectId,
+      ref: 'recipe',
+      required: [true, 'Recipe is required'],
     },
     amount: {
       type: Number,
       required: [true, 'Amount is required'],
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false }
 );
 
 recipeFavoriteSchema.post('save', MongooseError);
