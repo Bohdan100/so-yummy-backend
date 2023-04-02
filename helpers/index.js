@@ -4,4 +4,6 @@ const HttpError = require("./HttpError");
 
 const MongooseError = require("./MongooseError");
 
-module.exports = { ctrlWrapper, HttpError, MongooseError };
+const authError = require("./authError");
+
+module.exports = { ctrlWrapper, HttpError, MongooseError, authError };
