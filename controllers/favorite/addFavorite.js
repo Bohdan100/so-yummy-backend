@@ -5,7 +5,7 @@ const addFavorite = async (req, res) => {
   const { _id: userId } = req.user;
   const { recipeId } = req.params;
 
-  const userFavorite = await UserFavorite.findOne({ userId, recipeId });
+  const userFavorite = await UserFavorite.findOne({ userId, recipe: recipeId });
 
   if (userFavorite) {
     throw HttpError(
@@ -13,15 +13,15 @@ const addFavorite = async (req, res) => {
       `The recipe with id - ${recipeId} already exists in favorites of the user with id - ${userId}`
     );
   }
-  await UserFavorite.create({ userId, recipeId });
+  await UserFavorite.create({ userId, recipe: recipeId });
 
-  const recipeFavorite = await RecipeFavorite.findOne({ recipeId });
+  const recipeFavorite = await RecipeFavorite.findOne({ recipe: recipeId });
 
   if (recipeFavorite) {
     recipeFavorite.amount += 1;
     await recipeFavorite.save();
   } else {
-    await RecipeFavorite.create({ recipeId, amount: 1 });
+    await RecipeFavorite.create({ recipe: recipeId, amount: 1 });
   }
 
   res.status(201).json({

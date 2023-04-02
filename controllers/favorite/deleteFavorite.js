@@ -5,13 +5,13 @@ const deleteFavorite = async (req, res) => {
   const { _id: userId } = req.user;
   const { recipeId } = req.params;
 
-  const userFavorite = await UserFavorite.findOneAndDelete({ recipeId, userId });
+  const userFavorite = await UserFavorite.findOneAndDelete({ userId, recipe: recipeId });
 
   if (!userFavorite) {
     throw HttpError(404, `There is no such recipe with id ${recipeId}`);
   }
 
-  const recipeFavorite = await RecipeFavorite.findOne({ recipeId });
+  const recipeFavorite = await RecipeFavorite.findOne({ recipe: recipeId });
 
   if (recipeFavorite && recipeFavorite.amount > 0) {
     recipeFavorite.amount -= 1;

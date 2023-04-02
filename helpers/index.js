@@ -4,7 +4,9 @@ const HttpError = require('./HttpError');
 
 const MongooseError = require('./MongooseError');
 
-const authError = require("./authError");
+const setPaginationSlice = require('./setPaginationSlice');
+
+const authError = require('./authError');
 
 const getPreparedObj = require('./getPreparedObj');
 
@@ -20,5 +22,5 @@ module.exports = {
   getPreparedObj,
   getSkipLimitPage,
   getListRecipe,
+  setPaginationSlice,
 };
-
