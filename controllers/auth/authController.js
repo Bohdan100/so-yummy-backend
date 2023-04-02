@@ -4,7 +4,7 @@ const {
   createConflictError,
   createAuthError,
   createCustomError,
-} = require("../helpers/errorHelpers");
+} = require("../../helpers/authError");
 const { SECRET_KEY } = require("../config");
 
 const signup = async (req, res, next) => {
@@ -92,9 +92,9 @@ const subscriptionStatusUpdate = async (req, res, next) => {
 };
 
 module.exports = {
+  signup,
   login,
   logout,
-  signup,
   getCurrent,
   subscriptionStatusUpdate,
 };

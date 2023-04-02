@@ -1,5 +1,15 @@
-const authControllers = require("./auth.controller");
+const {
+  signup,
+  login,
+  logout,
+  getCurrent,
+  subscriptionStatusUpdate,
+} = require("./authController");
 
 module.exports = {
-  authControllers,
+  signup,
+  login,
+  logout,
+  getCurrent,
+  subscriptionStatusUpdate,
 };
