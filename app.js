@@ -1,9 +1,9 @@
-const express = require('express');
-const logger = require('morgan');
-const cors = require('cors');
-require('dotenv').config();
+const express = require("express");
+const logger = require("morgan");
+const cors = require("cors");
+require("dotenv").config();
 
-const { HttpError } = require('./helpers');
+const { HttpError } = require("./helpers");
 
 const {
   authRouter,
@@ -13,25 +13,24 @@ const {
   ownRecipesRouter,
   ingredientsRouter,
   popularRecipesRouter,
-} = require('./routes/api');
-
+  subscribeRouter,
+} = require("./routes/api");
 
 const app = express();
 
-const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
+const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/auth', authRouter);
-app.use('/api/recipes', recipesRouter);
-app.use('/api/favorite', favoriteRouter);
-app.use('/api/shopping-list', shoppingListRouter);
-app.use('/api/ownRecipe', ownRecipesRouter);
-app.use('/api/ingredients', ingredientsRouter);
-app.use('/api/popular-recipes', popularRecipesRouter);
-
+app.use("/api/auth", authRouter);
+app.use("/api/recipes", recipesRouter);
+app.use("/api/favorite", favoriteRouter);
+app.use("/api/shopping-list", shoppingListRouter);
+app.use("/api/ownRecipe", ownRecipesRouter);
+app.use("/api/ingredients", ingredientsRouter);
+app.use("/api/popular-recipes", popularRecipesRouter);
 app.use("/api/subscribe", subscribeRouter);
 
 app.use((error, req, res, next) => {
