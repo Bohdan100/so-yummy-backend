@@ -15,6 +15,7 @@ const {
   popularRecipesRouter,
 } = require('./routes/api');
 
+
 const app = express();
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
@@ -30,6 +31,8 @@ app.use('/api/shopping-list', shoppingListRouter);
 app.use('/api/ownRecipe', ownRecipesRouter);
 app.use('/api/ingredients', ingredientsRouter);
 app.use('/api/popular-recipes', popularRecipesRouter);
+
+app.use("/api/subscribe", subscribeRouter);
 
 app.use((error, req, res, next) => {
   if (HttpError) {
