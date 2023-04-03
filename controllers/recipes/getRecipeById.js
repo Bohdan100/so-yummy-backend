@@ -1,5 +1,4 @@
-const { Recipe } = require('../../models');
-const { Ingredient } = require('../../models');
+const { Recipe, Ingredient } = require('../../models');
 
 const { HttpError } = require('../../helpers');
 

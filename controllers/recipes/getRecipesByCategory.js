@@ -1,36 +1,36 @@
 const { Recipe } = require('../../models');
-const {
-  HttpError,
-  getPreparedObj,
-  getSkipLimitPage,
-} = require('../../helpers');
+const { HttpError, setPaginationSlice } = require('../../helpers');
 
 const getRecipesByCategory = async (req, res) => {
   const { categoryName } = req.params;
-  const { page: sPage = 1, limit: sLimit = 9 } = req.query;
 
-  const { skip, limit, page } = getSkipLimitPage({
-    page: sPage,
-    limit: sLimit,
-  });
+  const result = await Recipe.find({ category: categoryName });
 
-  const [result] = await Recipe.aggregate([
-    { $match: { category: categoryName } },
-    {
-      ...getPreparedObj({ skip, limit }),
-    },
-  ]);
+  const { page = 1, limit = 8 } = req.query;
 
-  if (!result.data.length) {
-    throw HttpError(404, `Recipes with ${categoryName} was not found`);
+  if (result.length === 0) {
+    return res.json({
+      status: 'success',
+      code: 200,
+      data: {
+        result: result,
+      },
+      total: 0,
+    });
   }
 
-  res.status(200).json({
+  const pagination = setPaginationSlice(page, limit, result.length);
+  if (!pagination) {
+    throw HttpError(400, 'Incorrect pagination params');
+  }
+
+  res.json({
     status: 'success',
     code: 200,
-    message: `Recipes with ${categoryName} was found`,
-    recipes: { ...result.data },
-    count: { ...result.count },
+    data: {
+      result: result.slice(pagination.start, pagination.end),
+    },
+    total: result.length,
     page,
     limit,
   });

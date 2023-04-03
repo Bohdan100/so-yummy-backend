@@ -1,17 +1,13 @@
-const addShoppingListSchema = require("./addShoppingListSchema");
+const addShoppingListSchema = require('./addShoppingListSchema');
+const validateRecipe = require('./validateRecipe');
+const { userJoiRegisterSchema, userJoiLoginSchema, userJoiSchemaUpdate } = require('./userSchema');
 const subscribeUserSchema = require("./subscribeUserSchema");
-const validateRecipe = require("./validateRecipe");
-const {
-  requestBodySchema,
-  userAuthSchema,
-  subscriptionStatusSchema,
-} = require("./validateAuth");
 
 module.exports = {
   addShoppingListSchema,
   validateRecipe,
-  requestBodySchema,
-  userAuthSchema,
-  subscriptionStatusSchema,
+  userJoiRegisterSchema,
+  userJoiLoginSchema,
+  userJoiSchemaUpdate,
   subscribeUserSchema,
 };
