@@ -3,20 +3,27 @@ const { Ingredient } = require("../../models/ingredient");
 const { setPaginationSlice } = require("../../helpers");
 const { HttpError } = require("../../helpers");
 
-const getIngredients = async (req, res, next) => {
-  const { query } = req.params;
+const getSearchRecipes = async (req, res, next) => {
+  const { type, query } = req.params;
+  let recipes = [];
 
-  const ingredient = await Ingredient.findOne({
-    ttl: { $regex: query, $options: "i" },
-  });
-
-  if (!ingredient) {
-    next(HttpError(404, `Ingredient ${query} not found`));
+  if (type === "Ingredients") {
+    const ingredient = await Ingredient.findOne({
+      ttl: { $regex: query, $options: "i" },
+    });
+    if (!ingredient) {
+      next(HttpError(404, `Ingredient ${query} not found`));
+    }
+    recipes = await Recipe.find({
+      ingredients: { $elemMatch: { id: ingredient._id } },
+    });
   }
 
-  const recipes = await Recipe.find({
-    ingredients: { $elemMatch: { id: ingredient._id } },
-  });
+  if (type === "Title") {
+    recipes = await Recipe.find({
+      title: { $regex: query, $options: "i" },
+    });
+  }
 
   if (!recipes) {
     next(HttpError(404, `Recipes with ${query} not found`));
@@ -35,4 +42,4 @@ const getIngredients = async (req, res, next) => {
   });
 };
 
-module.exports = getIngredients;
+module.exports = getSearchRecipes;

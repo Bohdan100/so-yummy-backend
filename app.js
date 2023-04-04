@@ -12,6 +12,7 @@ const {
   shoppingListRouter,
   ownRecipesRouter,
   ingredientsRouter,
+  searchRouter,
   popularRecipesRouter,
   subscribeRouter,
 } = require("./routes/api");
@@ -30,6 +31,7 @@ app.use("/api/favorite", favoriteRouter);
 app.use("/api/shopping-list", shoppingListRouter);
 app.use("/api/ownRecipe", ownRecipesRouter);
 app.use("/api/ingredients", ingredientsRouter);
+app.use("/api/search", searchRouter);
 app.use("/api/popular-recipes", popularRecipesRouter);
 app.use("/api/subscribe", subscribeRouter);
 

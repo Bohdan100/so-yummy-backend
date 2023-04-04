@@ -1,12 +1,12 @@
-const auth = require('./auth');
-const recipes = require('./recipes');
-const favorite = require('./favorite');
-const shoppingList = require('./shoppingList');
-const ownRecipes = require('./ownRecipes');
-const ingredients = require('./ingredients');
+const auth = require("./auth");
+const recipes = require("./recipes");
+const favorite = require("./favorite");
+const shoppingList = require("./shoppingList");
+const ownRecipes = require("./ownRecipes");
+const ingredients = require("./ingredients");
+const search = require("./search");
 const subscribe = require("./subscribe");
-const popularRecipes = require('./popularRecipes');
-
+const popularRecipes = require("./popularRecipes");
 
 module.exports = {
   auth,
@@ -15,6 +15,7 @@ module.exports = {
   shoppingList,
   ownRecipes,
   ingredients,
+  search,
   subscribe,
   popularRecipes,
 };

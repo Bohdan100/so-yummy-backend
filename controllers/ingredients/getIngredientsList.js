@@ -2,8 +2,7 @@ const { Ingredient } = require("../../models");
 const { HttpError } = require("../../helpers");
 
 const getIngredientsList = async (req, res) => {
-  // const { _id: owner } = req.user;
-  const ingredient = await Ingredient.find();
+  const ingredient = await Ingredient.find({}, "ttl");
 
   if (!ingredient) {
     throw HttpError(404, "Ingredients not found");
