@@ -5,13 +5,16 @@ const bcrypt = require("bcryptjs");
 const { SECRET_KEY } = process.env;
 
 const login = async (req, res) => {
-  console.log(1);
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
   if (!user) {
     throw HttpError(404, "Email or password invalid");
   }
+
+  // if (user.token) {
+  //   throw HttpError(409, "Only one active session is permitted");
+  // }
 
   const passwordCompare = bcrypt.compareSync(password, user?.password);
 

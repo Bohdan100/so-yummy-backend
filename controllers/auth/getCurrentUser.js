@@ -1,13 +1,16 @@
+const { User } = require("../../models");
+
 const getCurrentUser = async (req, res) => {
   const { email } = req.user;
 
+  const user = await User.findOne({ email });
+
   res.json({
-    status: 'success',
+    status: "success",
     code: 200,
     data: {
-      user: {
-        email,
-      },
+      name: user.name,
+      email: user.email,
     },
   });
 };
