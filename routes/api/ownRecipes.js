@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get('/', auth, ctrl.getOwnRecipes);
 
+router.get('/:recipeId', auth, ctrl.getOwnRecipeById);
+
 router.post('/', auth, uploadCloud, ctrl.addOwnRecipe);
 
 router.delete('/:recipeId', auth, ctrl.deleteOwnRecipe);
