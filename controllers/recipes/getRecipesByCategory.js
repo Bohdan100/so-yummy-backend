@@ -3,8 +3,10 @@ const { HttpError, setPaginationSlice } = require('../../helpers');
 
 const getRecipesByCategory = async (req, res) => {
   const { categoryName } = req.params;
+  const capitilizedCategory =
+    categoryName[0].toUpperCase() + categoryName.slice(1);
 
-  const result = await Recipe.find({ category: categoryName });
+  const result = await Recipe.find({ category: capitilizedCategory });
 
   const { page = 1, limit = 8 } = req.query;
 
