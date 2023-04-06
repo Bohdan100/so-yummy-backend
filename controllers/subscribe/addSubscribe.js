@@ -15,7 +15,7 @@ const addSubscribe = async (req, res, next) => {
   }
 
   if (emailSub) {
-    throw HttpError(409, `The email belongs to another user`);
+    throw HttpError(404, `The email belongs to another user`);
   }
 
   const result = await Subscribe.create({
