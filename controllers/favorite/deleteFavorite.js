@@ -1,11 +1,14 @@
-const { UserFavorite, RecipeFavorite } = require('../../models');
-const { HttpError } = require('../../helpers');
+const { UserFavorite, RecipeFavorite } = require("../../models");
+const { HttpError } = require("../../helpers");
 
 const deleteFavorite = async (req, res) => {
   const { _id: userId } = req.user;
   const { recipeId } = req.params;
 
-  const userFavorite = await UserFavorite.findOneAndDelete({ userId, recipe: recipeId });
+  const userFavorite = await UserFavorite.findOneAndDelete({
+    userId,
+    recipe: recipeId,
+  });
 
   if (!userFavorite) {
     throw HttpError(404, `There is no such recipe with id ${recipeId}`);
@@ -21,8 +24,10 @@ const deleteFavorite = async (req, res) => {
   }
 
   res.json({
-    status: 'succes',
+    status: "succes",
     code: 200,
+    id: recipeId,
+    favorite: false,
     message: `Recipe with id - ${recipeId} deleted from favorites `,
   });
 };

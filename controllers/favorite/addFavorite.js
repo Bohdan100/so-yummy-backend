@@ -1,5 +1,5 @@
-const { UserFavorite, RecipeFavorite } = require('../../models');
-const { HttpError } = require('../../helpers');
+const { UserFavorite, RecipeFavorite } = require("../../models");
+const { HttpError } = require("../../helpers");
 
 const addFavorite = async (req, res) => {
   const { _id: userId } = req.user;
@@ -25,8 +25,10 @@ const addFavorite = async (req, res) => {
   }
 
   res.status(201).json({
-    status: 'success',
+    status: "success",
     code: 201,
+    id: recipeId,
+    favorite: true,
     message: `Recipe with ${recipeId} was added to favorites`,
   });
 };
