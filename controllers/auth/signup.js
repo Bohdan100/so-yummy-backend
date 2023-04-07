@@ -34,6 +34,7 @@ const signup = async (req, res) => {
       user: {
         name,
         email,
+        avatar: newUser.avatar,
       },
     },
   });
