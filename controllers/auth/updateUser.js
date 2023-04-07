@@ -1,4 +1,4 @@
-const { User } = require("../../models");
+const { User } = require('../../models');
 
 const updateUser = async (req, res) => {
   const { _id } = req.user;
@@ -7,7 +7,8 @@ const updateUser = async (req, res) => {
   await User.findByIdAndUpdate(_id, { name: req.body.name, avatar: avatarURL });
 
   res.json({
-    status: "success",
+    status: 'success',
+    code: 200,
     data: {
       user: {
         name: req.body.name,
