@@ -4,6 +4,6 @@ const router = express.Router();
 const { auth } = require("../../middlewares");
 const { search: ctrl } = require("../../controllers");
 
-router.get("/:type&:query", auth, ctrl.getSearchRecipes);
+router.get("/", auth, ctrl.getSearchRecipes);
 
 module.exports = router;
