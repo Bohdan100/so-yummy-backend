@@ -5,6 +5,7 @@ const { HttpError } = require("../../helpers");
 
 const getSearchRecipes = async (req, res, next) => {
   const { type, query, page, perPage } = req.query;
+
   let recipes = [];
 
   if (type === "Ingredients") {
@@ -12,7 +13,7 @@ const getSearchRecipes = async (req, res, next) => {
       ttl: { $regex: query, $options: "i" },
     });
     if (!ingredient) {
-      next(HttpError(404, `Ingredient ${query} not found`));
+      return res.json({ totalHits: 0, meals: [] });
     }
     recipes = await Recipe.find({
       ingredients: { $elemMatch: { id: ingredient._id } },
@@ -25,8 +26,8 @@ const getSearchRecipes = async (req, res, next) => {
     });
   }
 
-  if (!recipes) {
-    next(HttpError(404, `Recipes with ${query} not found`));
+  if (recipes.length === 0) {
+    return res.json({ totalHits: 0, meals: [] });
   }
 
   const pagination = setPaginationSlice(page, perPage, recipes.length);
