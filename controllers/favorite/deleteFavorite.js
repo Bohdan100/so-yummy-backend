@@ -15,7 +15,7 @@ const deleteFavorite = async (req, res) => {
   }
 
   const recipeFavorite = await RecipeFavorite.findOne({ recipe: recipeId });
-  console.log("11111111111111111");
+
   if (recipeFavorite && recipeFavorite.amount > 0) {
     recipeFavorite.amount -= 1;
     await recipeFavorite.save();
