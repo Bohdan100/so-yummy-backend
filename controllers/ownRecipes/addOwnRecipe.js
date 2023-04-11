@@ -1,16 +1,15 @@
-const { Recipe } = require('../../models');
+const { Recipe } = require("../../models");
 
-const { validateRecipe } = require('../../schemas');
+const { validateRecipe } = require("../../schemas");
 
 const DEFAULT_RECIPE_IMG_URL =
-  'https://res.cloudinary.com/db5awxaxs/image/upload/v1680438156/cld-sample-4.jpg';
+  "https://res.cloudinary.com/db5awxaxs/image/upload/v1680438156/cld-sample-4.jpg";
 
 const addRecipe = async (req, res) => {
   const userId = req?.user?._id;
   const pictureURL = req.file?.path ?? DEFAULT_RECIPE_IMG_URL;
 
   const { body } = req;
-  // console.log('body', body);
   const { error } = validateRecipe.validate(body);
   if (error) {
     res.status(400);
@@ -20,12 +19,13 @@ const addRecipe = async (req, res) => {
   const newRecipe = await Recipe.create({
     ...body,
     preview: pictureURL,
+    thumb: pictureURL,
     owner: userId,
   });
 
   res.status(201).json({
     data: newRecipe,
-    message: 'Create succesfull',
+    message: "Create succesfull",
   });
 };
 
