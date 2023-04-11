@@ -1,4 +1,4 @@
-const queryString = require("query-string");
+const querystring = require("querystring");
 const axios = require("axios");
 
 const bcrypt = require("bcryptjs");
@@ -14,7 +14,7 @@ const {
 } = process.env;
 
 const googleAuth = async (req, res) => {
-  const stringifiedParams = queryString.stringify({
+  const stringifiedParams = querystring.stringify({
     client_id: GOOGLE_CLIENT_ID,
     redirect_uri: `${BASE_URL}/api/auth/google-redirect`,
     scope: [
@@ -34,7 +34,7 @@ const googleAuth = async (req, res) => {
 const googleRedirect = async (req, res) => {
   const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
   const urlObj = new URL(fullUrl);
-  const urlParams = queryString.parse(urlObj.search.substring(1));
+  const urlParams = querystring.parse(urlObj.search.substring(1));
   const code = urlParams.code;
   const tokenData = await axios({
     url: `https://oauth2.googleapis.com/token`,
