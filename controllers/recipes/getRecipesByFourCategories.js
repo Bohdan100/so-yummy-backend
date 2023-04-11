@@ -2,8 +2,7 @@ const { Recipe } = require('../../models');
 const { HttpError, getListRecipe } = require('../../helpers');
 
 const getRecipesByFourCategories = async (req, res) => {
-  // ?  1 ВАРИАНТ - пока не удалять
-  //  Динамічно отримувати кількість рецептів по 4 категоріям
+
   const { count = 1 } = req.query;
   const options = [
     { $sample: { size: Number(count) } },
@@ -18,21 +17,7 @@ const getRecipesByFourCategories = async (req, res) => {
       },
     },
   ];
-  // ?  - ВАРИАНТ - пока не удалять
-  //   Отримувати кількість рецептів по 4 категоріям по чотири штуки
-  // const options = [
-  //   { $sample: { size: 4 } },
-  //   { $limit: 4 },
-  //   {
-  //     $project: {
-  //       createdAt: 0,
-  //       updatedAt: 0,
-  //       ingredients: 0,
-  //       area: 0,
-  //       tags: 0,
-  //     },
-  //   },
-  // ];
+
 
   const result = await Recipe.aggregate([
     {
