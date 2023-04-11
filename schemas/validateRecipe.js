@@ -1,7 +1,7 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
 const addRecipeSchema = Joi.object().keys({
-  preview: Joi.string(),
+  preview: Joi.any(),
   title: Joi.string().required(),
   instructions: Joi.string().required(),
   category: Joi.string().required(),
