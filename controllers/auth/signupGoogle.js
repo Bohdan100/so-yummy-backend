@@ -1,4 +1,4 @@
-const queryString = require("node:querystring");
+const queryString = require("query-string");
 const axios = require("axios");
 
 const bcrypt = require("bcryptjs");
