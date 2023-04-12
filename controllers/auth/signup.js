@@ -1,7 +1,7 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { User } = require('../../models');
-const { HttpError } = require('../../helpers');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { User } = require("../../models");
+const { HttpError } = require("../../helpers");
 const { SECRET_KEY } = process.env;
 
 const signup = async (req, res) => {
@@ -9,7 +9,7 @@ const signup = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user) {
-    throw HttpError(409, 'Email in use');
+    throw HttpError(409, "Email in use");
   }
 
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -22,12 +22,12 @@ const signup = async (req, res) => {
     id: newUser._id,
   };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '24h' });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
   newUser.token = token;
   await newUser.save();
 
-  res.status(201).json({
-    status: 'success',
+  return res.status(201).json({
+    status: "success",
     code: 201,
     data: {
       token,
