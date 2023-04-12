@@ -1,14 +1,14 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-const { OUTLOOK_PASSWORD } = process.env;
+const { OUTLOOK_PASSWORD, BASE_EMAIL } = process.env;
 
 const nodemaoilerConfig = {
   host: "smtp-mail.outlook.com",
   port: 587,
   secure: false,
   auth: {
-    user: "so-yummy-pg3@outlook.com",
+    user: `${BASE_EMAIL}`,
     pass: OUTLOOK_PASSWORD,
   },
 };
@@ -16,7 +16,7 @@ const nodemaoilerConfig = {
 const transport = nodemailer.createTransport(nodemaoilerConfig);
 
 const sendEmail = async (data) => {
-  const email = { ...data, from: "so-yummy-pg3@outlook.com" };
+  const email = { ...data, from: `${BASE_EMAIL}` };
   await transport.sendMail(email);
 
   return true;
