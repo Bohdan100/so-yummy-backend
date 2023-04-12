@@ -4,7 +4,7 @@ const getFavoriteById = async (req, res) => {
   const { _id: userId } = req.user;
   const { recipeId } = req.params;
 
-  const favoriteRecipe = await UserFavorite.findOneAndDelete({ userId, recipe: recipeId });
+  const favoriteRecipe = await UserFavorite.findOne({ userId, recipe: recipeId });
 
   if (!favoriteRecipe) {
     res.json({

@@ -1,7 +1,7 @@
-const { User } = require("../../models");
-const { HttpError } = require("../../helpers");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const { User } = require('../../models');
+const { HttpError } = require('../../helpers');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const { SECRET_KEY } = process.env;
 
 const login = async (req, res) => {
@@ -9,23 +9,23 @@ const login = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    throw HttpError(401, "Email or password invalid");
+    throw HttpError(401, 'Email or password invalid');
   }
 
   const passwordCompare = bcrypt.compareSync(password, user?.password);
   if (!passwordCompare) {
-    throw HttpError(401, "Email or password invalid");
+    throw HttpError(401, 'Email or password invalid');
   }
 
   const payload = {
     id: user._id,
   };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '24h' });
 
   await User.findByIdAndUpdate(user._id, { token });
 
   res.json({
-    status: "success",
+    status: 'success',
     code: 200,
     data: {
       token,
@@ -33,6 +33,7 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email,
         avatar: user.avatar,
+        userId: user._id,
       },
     },
   });
