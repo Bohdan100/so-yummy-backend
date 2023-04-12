@@ -3,6 +3,9 @@ const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+
 const { HttpError } = require("./helpers");
 
 const {
@@ -34,6 +37,7 @@ app.use("/api/ingredients", ingredientsRouter);
 app.use("/api/search", searchRouter);
 app.use("/api/popular-recipes", popularRecipesRouter);
 app.use("/api/subscribe", subscribeRouter);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((error, req, res, next) => {
   if (HttpError) {
