@@ -7,7 +7,13 @@ const deleteShoppingList = async (req, res, next) => {
   if (!result) {
     next(HttpError(404, "Not found"));
   }
-  res.json({ message: "Success remove ingredient from shoping list" });
+  console.log(result);
+  res.json({
+    status: "succes",
+    code: 200,
+    id,
+    message: `Success remove ingredient with id - ${id} from shoping list`,
+  });
 };
 
 module.exports = deleteShoppingList;
