@@ -7,7 +7,6 @@ const deleteShoppingList = async (req, res, next) => {
   if (!result) {
     next(HttpError(404, "Not found"));
   }
-  console.log(result);
   res.json({
     status: "succes",
     code: 200,
