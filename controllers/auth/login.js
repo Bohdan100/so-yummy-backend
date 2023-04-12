@@ -12,12 +12,7 @@ const login = async (req, res) => {
     throw HttpError(401, "Email or password invalid");
   }
 
-  // if (user.token) {
-  //   throw HttpError(409, "Only one active session is permitted");
-  // }
-
   const passwordCompare = bcrypt.compareSync(password, user?.password);
-
   if (!passwordCompare) {
     throw HttpError(401, "Email or password invalid");
   }

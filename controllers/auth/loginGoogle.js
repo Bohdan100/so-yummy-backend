@@ -1,7 +1,6 @@
 const querystring = require("querystring");
 const axios = require("axios");
 
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { User } = require("../../models");
 const { HttpError } = require("../../helpers");
@@ -13,10 +12,10 @@ const {
   FRONTEND_URL,
 } = process.env;
 
-const googleAuth = async (req, res) => {
+const googleLogin = async (req, res) => {
   const stringifiedParams = querystring.stringify({
     client_id: GOOGLE_CLIENT_ID,
-    redirect_uri: `${BASE_URL}/api/auth/google-redirect`,
+    redirect_uri: `${BASE_URL}/api/auth/google-redirect-login`,
     scope: [
       "https://www.googleapis.com/auth/userinfo.email",
       "https://www.googleapis.com/auth/userinfo.profile",
@@ -31,7 +30,7 @@ const googleAuth = async (req, res) => {
   );
 };
 
-const googleRedirectRegister = async (req, res) => {
+const googleRedirectLogin = async (req, res) => {
   const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
   const urlObj = new URL(fullUrl);
   const urlParams = querystring.parse(urlObj.search.substring(1));
@@ -42,7 +41,7 @@ const googleRedirectRegister = async (req, res) => {
     data: {
       client_id: GOOGLE_CLIENT_ID,
       client_secret: GOOGLE_CLIENT_SECRET,
-      redirect_uri: `${BASE_URL}/api/auth/google-redirect`,
+      redirect_uri: `${BASE_URL}/api/auth/google-redirect-login`,
       grant_type: "authorization_code",
       code,
     },
@@ -57,27 +56,20 @@ const googleRedirectRegister = async (req, res) => {
   });
 
   const email = userData.data.email;
-  const name = userData.data.given_name;
 
   const user = await User.findOne({ email });
-  if (user) {
-    throw HttpError(409, "Email in use");
+  if (!user) {
+    throw HttpError(401, "Email or password invalid");
   }
-  const password = `Back${userData.data.email}`;
-  const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-
-  await User.create({ name, email, password: hashPassword });
-  const newUser = await User.findOne({ email });
   const payload = {
-    id: newUser._id,
+    id: user._id,
   };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
-  newUser.token = token;
-  await newUser.save();
+  await User.findByIdAndUpdate(user._id, { token });
 
   return res.redirect(
-    `${FRONTEND_URL}/google-redirect?token=${token}&email=${email}&name=${name}&avatar=${newUser.avatar}`
+    `${FRONTEND_URL}/google-redirect?token=${token}&email=${email}&name=${user.name}&avatar=${user.avatar}`
   );
 };
 
-module.exports = { googleAuth, googleRedirectRegister };
+module.exports = { googleLogin, googleRedirectLogin };

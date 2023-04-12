@@ -23,6 +23,8 @@ router.patch(
 );
 
 router.get("/google", ctrl.googleAuth);
-router.get("/google-redirect", ctrl.googleRedirect);
+router.get("/google-redirect", ctrl.googleRedirectRegister);
+router.get("/google-login", ctrl.googleLogin);
+router.get("/google-redirect-login", ctrl.googleRedirectLogin);
 
 module.exports = router;
