@@ -32,6 +32,7 @@ const getFavorites = async (req, res) => {
       status: "success",
       code: 200,
       data: favoriteRecipesByUserId,
+      total: favoriteRecipesByUserId.length,
     });
   }
 
