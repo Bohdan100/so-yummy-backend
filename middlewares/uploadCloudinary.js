@@ -22,7 +22,6 @@ const storageRecipe = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: (req, file) => {
     const { _id } = req.user;
-    console.log("_id", _id);
     const imgID = nanoid(5);
     const recipeName = `${_id}_${imgID}_recipe`;
     return {
@@ -40,14 +39,12 @@ const storageRecipe = new CloudinaryStorage({
   },
 
   filename: (req, file, cb) => {
-    console.log("storageRecipe", file);
     cb(null, file.originalname);
   },
 });
 
 function fileFilter(req, file, cb) {
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    console.log("fileFilter", file.mimetype);
     cb(null, true);
   } else {
     cb(

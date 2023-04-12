@@ -5,8 +5,7 @@ const login = require("./login");
 const logout = require("./logout");
 const getCurrentUser = require("./getCurrentUser");
 const updateUser = require("./updateUser");
-const { googleAuth, googleRedirectRegister } = require("./signupGoogle");
-const { googleLogin, googleRedirectLogin } = require("./loginGoogle");
+const { googleAuth, googleRedirect } = require("./authGoogle");
 
 module.exports = {
   signup: ctrlWrapper(signup),
@@ -15,7 +14,5 @@ module.exports = {
   getCurrentUser: ctrlWrapper(getCurrentUser),
   updateUser: ctrlWrapper(updateUser),
   googleAuth: ctrlWrapper(googleAuth),
-  googleRedirectRegister: ctrlWrapper(googleRedirectRegister),
-  googleLogin: ctrlWrapper(googleLogin),
-  googleRedirectLogin: ctrlWrapper(googleRedirectLogin),
+  googleRedirect: ctrlWrapper(googleRedirect),
 };
