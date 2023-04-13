@@ -13,9 +13,7 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Register a new user.",
         "requestBody": {
           "content": {
@@ -33,7 +31,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthInfo"
+                  "$ref": "#/components/schemas/UserInfo"
                 }
               }
             }
@@ -46,7 +44,7 @@
                   "$ref": "#/components/schemas/InfoMessage"
                 },
                 "example": {
-                  "message": "any.required: missing field email"
+                  "message": "missing field email / name / password"
                 }
               }
             }
@@ -69,9 +67,7 @@
     },
     "/auth/login": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Login user.",
         "requestBody": {
           "content": {
@@ -89,7 +85,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthInfo"
+                  "$ref": "#/components/schemas/UserInfo"
                 }
               }
             }
@@ -102,12 +98,12 @@
                   "$ref": "#/components/schemas/InfoMessage"
                 },
                 "example": {
-                  "message": "missing field password"
+                  "message": "missing field email/name/password || name is not allowed"
                 }
               }
             }
           },
-          "404": {
+          "401": {
             "description": "Forbidden - Email or password is wrong",
             "content": {
               "application/json": {
@@ -119,29 +115,25 @@
                 }
               }
             }
-          },
-          "409": {
-            "description": "Conflict - Only one active session is permitted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InfoMessage"
-                },
-                "example": {
-                  "message": "Only one active session is permitted"
-                }
-              }
-            }
           }
         }
       }
     },
     "/auth/logout": {
       "get": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Logout user.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
         "responses": {
           "204": {
             "description": "Success"
@@ -169,17 +161,26 @@
     },
     "/auth/current": {
       "get": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Get user's email and name.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/CurrentInfo"
                 }
               }
             }
@@ -207,27 +208,36 @@
     },
     "/auth/edit": {
       "patch": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Update user's avatar and name.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserInfoBody"
+                "$ref": "#/components/schemas/UpdateUserRequestInfo"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UpdateUserInfoBody"
+                  "$ref": "#/components/schemas/UpdateUserResponseInfo"
                 }
               }
             }
@@ -253,7 +263,7 @@
                   "$ref": "#/components/schemas/InfoMessage"
                 },
                 "example": {
-                  "message": "Error's upload image"
+                  "message": "errors in the process of processing and uploading images to Cloudinary"
                 }
               }
             }
@@ -268,10 +278,19 @@
     },
     "/shopping-list/": {
       "get": {
-        "tags": [
-          "Shopping-list"
-        ],
+        "tags": ["Shopping-list"],
         "summary": "Get user's shopping list.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -304,15 +323,24 @@
         ]
       },
       "post": {
-        "tags": [
-          "Shopping-list"
-        ],
+        "tags": ["Shopping-list"],
         "summary": "Add own ingredient to user's shopping list.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddToShoppingListBody"
+                "$ref": "#/components/schemas/AddShoppingItem"
               }
             }
           },
@@ -337,7 +365,7 @@
                   "$ref": "#/components/schemas/InfoMessage"
                 },
                 "example": {
-                  "message": "\"strIngredient\" is required"
+                  "message": "\"strIngredient\" is required || \"owner\" is not allowed"
                 }
               }
             }
@@ -376,22 +404,29 @@
         ]
       }
     },
-    "/shopping-list/{ingredientId}": {
+    "/shopping-list/{id}": {
       "delete": {
-        "tags": [
-          "Shopping-list"
-        ],
+        "tags": ["Shopping-list"],
         "summary": "Remove own ingredient by ID from shopping list.",
         "parameters": [
           {
-            "name": "ingredientId",
+            "name": "id",
             "in": "path",
             "description": "Ingredient ID",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/IngredientID"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
             }
           }
         ],
@@ -401,10 +436,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/InfoMessage"
-                },
-                "example": {
-                  "message": "Success remove ingredient from shoping list"
+                  "$ref": "#/components/schemas/RemoveShoppingItem"
                 }
               }
             }
@@ -458,9 +490,7 @@
     },
     "/subscribe/": {
       "post": {
-        "tags": [
-          "Subscribe"
-        ],
+        "tags": ["Subscribe"],
         "summary": "Email subscription to letters with news.",
         "requestBody": {
           "content": {
@@ -473,7 +503,7 @@
           "required": true
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -491,7 +521,7 @@
                   "$ref": "#/components/schemas/InfoMessage"
                 },
                 "example": {
-                  "message": "\"email\" is required"
+                  "message": "missing field email"
                 }
               }
             }
@@ -545,9 +575,7 @@
     },
     "/recipes/": {
       "get": {
-        "tags": [
-          "Recipes"
-        ],
+        "tags": ["Recipes"],
         "summary": "Get list of recipes.",
         "parameters": [
           {
@@ -573,6 +601,15 @@
               "type": "integer",
               "default": 8
             }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
           }
         ],
         "responses": {
@@ -581,7 +618,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArrayRecipes"
+                  "$ref": "#/components/schemas/RecipesList"
                 }
               }
             }
@@ -635,10 +672,19 @@
     },
     "/recipes/category-list": {
       "get": {
-        "tags": [
-          "Recipes"
-        ],
+        "tags": ["Recipes"],
         "summary": "Get list of all categories of recipes.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Returns full list of categories",
@@ -686,9 +732,7 @@
     },
     "/recipes/{recipeId}": {
       "get": {
-        "tags": [
-          "Recipes"
-        ],
+        "tags": ["Recipes"],
         "summary": "Get recipe by ID from recipe's list.",
         "parameters": [
           {
@@ -700,6 +744,15 @@
             "explode": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
             }
           }
         ],
@@ -763,9 +816,7 @@
     },
     "/recipes/categories/{categoryName}": {
       "get": {
-        "tags": [
-          "Recipes"
-        ],
+        "tags": ["Recipes"],
         "summary": "Get list of recipes by category's name.",
         "parameters": [
           {
@@ -811,11 +862,17 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "enum": [
-                "title",
-                "popular"
-              ],
+              "enum": ["title", "popular"],
               "default": "popular"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
             }
           }
         ],
@@ -825,7 +882,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArrayRecipes"
+                  "$ref": "#/components/schemas/RecipesList"
                 }
               }
             }
@@ -892,9 +949,7 @@
     },
     "/favorite/": {
       "get": {
-        "tags": [
-          "Favorite"
-        ],
+        "tags": ["Favorite"],
         "summary": "Get list of favorite recipes for current user.",
         "parameters": [
           {
@@ -929,11 +984,17 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "enum": [
-                "title",
-                "popular"
-              ],
+              "enum": ["title", "popular"],
               "default": "popular"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
             }
           }
         ],
@@ -943,7 +1004,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArrayRecipes"
+                  "$ref": "#/components/schemas/RecipesList"
                 }
               }
             }
@@ -984,9 +1045,7 @@
     },
     "/favorite/{recipeId}": {
       "get": {
-        "tags": [
-          "Favorite"
-        ],
+        "tags": ["Favorite"],
         "summary": "Get favorite recipe by Id for current user.",
         "parameters": [
           {
@@ -998,6 +1057,15 @@
             "explode": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
             }
           }
         ],
@@ -1059,9 +1127,7 @@
         ]
       },
       "post": {
-        "tags": [
-          "Favorite"
-        ],
+        "tags": ["Favorite"],
         "summary": "Toggle favorite recipe's status by ID.",
         "parameters": [
           {
@@ -1073,6 +1139,15 @@
             "explode": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
             }
           }
         ],
@@ -1147,9 +1222,7 @@
         ]
       },
       "delete": {
-        "tags": [
-          "Favorite"
-        ],
+        "tags": ["Favorite"],
         "summary": "Remove recipe by ID from favorite list.",
         "parameters": [
           {
@@ -1161,6 +1234,15 @@
             "explode": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
             }
           }
         ],
@@ -1219,9 +1301,7 @@
     },
     "/ownRecipe/": {
       "get": {
-        "tags": [
-          "OwnRecipe"
-        ],
+        "tags": ["OwnRecipe"],
         "summary": "Get list of own user's recipes.",
         "parameters": [
           {
@@ -1246,6 +1326,15 @@
               "minimum": 1,
               "type": "integer",
               "default": 4
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
             }
           }
         ],
@@ -1307,10 +1396,19 @@
         ]
       },
       "post": {
-        "tags": [
-          "OwnRecipe"
-        ],
+        "tags": ["OwnRecipe"],
         "summary": "Add recipe to own user's recipes.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "User's token",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Token"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1381,9 +1479,7 @@
     },
     "/ownRecipe/{id}": {
       "get": {
-        "tags": [
-          "OwnRecipe"
-        ],
+        "tags": ["OwnRecipe"],
         "summary": "Get recipe by ID from own recipes.",
         "parameters": [
           {
@@ -1469,9 +1565,7 @@
         ]
       },
       "delete": {
-        "tags": [
-          "OwnRecipe"
-        ],
+        "tags": ["OwnRecipe"],
         "summary": "Delete recipe by ID from own recipes.",
         "parameters": [
           {
@@ -1562,9 +1656,7 @@
     },
     "/ingredients/list": {
       "get": {
-        "tags": [
-          "Ingredients"
-        ],
+        "tags": ["Ingredients"],
         "summary": "Get list of ingredients.",
         "parameters": [
           {
@@ -1655,9 +1747,7 @@
     },
     "/ingredients/{query}": {
       "get": {
-        "tags": [
-          "Ingredients"
-        ],
+        "tags": ["Ingredients"],
         "summary": "Get list of recipes by ingredient's name.",
         "parameters": [
           {
@@ -1757,9 +1847,7 @@
     },
     "/search/{type&query}": {
       "get": {
-        "tags": [
-          "Search"
-        ],
+        "tags": ["Search"],
         "summary": "Get list of recipes by title or ingredients.",
         "parameters": [
           {
@@ -1805,7 +1893,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArrayRecipes"
+                  "$ref": "#/components/schemas/RecipesList"
                 }
               }
             }
@@ -1859,9 +1947,7 @@
     },
     "/popular-recipes": {
       "get": {
-        "tags": [
-          "Popular-recipes"
-        ],
+        "tags": ["Popular-recipes"],
         "summary": "Get list of popular recipes.",
         "parameters": [
           {
@@ -1896,10 +1982,7 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "enum": [
-                "title",
-                "popular"
-              ],
+              "enum": ["title", "popular"],
               "default": "popular"
             }
           }
@@ -1985,12 +2068,105 @@
           "Another"
         ]
       },
+      "InfoMessage": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Password": {
+        "maxLength": 100,
+        "minLength": 6,
+        "type": "string",
+        "description": "User's password in database",
+        "example": "Awdcss23"
+      },
+      "UserName": {
+        "maxLength": 32,
+        "minLength": 3,
+        "type": "string",
+        "description": "User's name in database",
+        "example": "Anna"
+      },
+      "Email": {
+        "type": "string",
+        "description": "User's email in database",
+        "format": "email",
+        "example": "anna@gmail.com"
+      },
+      "Avatar": {
+        "maxLength": 2097152,
+        "type": "string",
+        "description": "User's photo to new avatar",
+        "format": "uri",
+        "example": "file with extension .jpg, .jpeg, .png"
+      },
+      "AvatarURL": {
+        "type": "string",
+        "description": "Url-link to the user's avatar",
+        "format": "uri",
+        "example": "https://res.cloudinary.com/db5awxaxs/image/upload/v1680438156/cld-sample-4.jpg"
+      },
+      "UserId": {
+        "type": "string",
+        "description": "User ID in database",
+        "format": "uri",
+        "example": "6437f924bfee3943311833a2"
+      },
+      "Status": {
+        "type": "string",
+        "description": "The status of responce",
+        "example": "success"
+      },
+      "Code": {
+        "type": "string",
+        "description": "The code of responce",
+        "example": 200
+      },
+      "Token": {
+        "type": "string",
+        "description": "JWT token",
+        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MmMxODQyM2NhZmFjMGVkNGYyMDYyZiIsImlhdCI6MTY4MDYyMDc1MCwiZXhwIjoxNjgwNzA3MTUwfQ.vpfUcfAEnlEXa_lpbtmfmk8leV2UAgIimyKr8FUssQM"
+      },
+      "StrIngredient": {
+        "type": "string",
+        "description": "Ingredient's title",
+        "example": "Meat"
+      },
+      "Weight": {
+        "type": "string",
+        "description": "Quantity of ingredient",
+        "example": "400g"
+      },
+      "Image": {
+        "type": "string",
+        "description": "The URL of the image for the ingredient",
+        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
+      },
+      "RecipeID": {
+        "type": "string",
+        "description": "The unique identifier of the recipe",
+        "example": "640cd5ac2d9fecf12e8897f8"
+      },
+      "IngredientID": {
+        "type": "string",
+        "description": "The unique identifier of the ingredient",
+        "example": "642d4c0b84e8c727bbe171fa"
+      },
+      "OwnerID": {
+        "type": "string",
+        "description": "The unique identifier of the recipe",
+        "example": "642c18423cafac0ed4f2062f"
+      },
+      "SubscribeID": {
+        "type": "string",
+        "description": "The unique identifier of the recipe",
+        "example": "642d84c0588455f7fc7959c4"
+      },
       "RegisterCredentials": {
-        "required": [
-          "email",
-          "name",
-          "password"
-        ],
+        "required": ["email", "name", "password"],
         "type": "object",
         "properties": {
           "name": {
@@ -2005,10 +2181,7 @@
         }
       },
       "LoginCredentials": {
-        "required": [
-          "email",
-          "password"
-        ],
+        "required": ["email", "password"],
         "type": "object",
         "properties": {
           "email": {
@@ -2019,71 +2192,173 @@
           }
         }
       },
-      "Password": {
-        "maxLength": 100,
-        "minLength": 6,
-        "type": "string",
-        "description": "User's password",
-        "example": "awdcss"
-      },
-      "UserName": {
-        "maxLength": 32,
-        "minLength": 3,
-        "type": "string",
-        "description": "User's name",
-        "example": "Anna"
-      },
-      "Email": {
-        "type": "string",
-        "description": "User's email",
-        "format": "email",
-        "example": "anna@gmail.com"
-      },
-      "AuthInfo": {
+      "UserInfo": {
         "type": "object",
         "properties": {
-          "token": {
-            "$ref": "#/components/schemas/Token"
+          "status": {
+            "$ref": "#/components/schemas/Status"
           },
-          "user": {
-            "$ref": "#/components/schemas/User"
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "$ref": "#/components/schemas/Token"
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/UserName"
+                  },
+                  "email": {
+                    "$ref": "#/components/schemas/Email"
+                  },
+                  "avatar": {
+                    "$ref": "#/components/schemas/AvatarURL"
+                  },
+                  "userId": {
+                    "$ref": "#/components/schemas/UserId"
+                  }
+                }
+              }
+            }
           }
         }
       },
-      "InfoMessage": {
+      "CurrentInfo": {
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string"
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "$ref": "#/components/schemas/UserName"
+              },
+              "email": {
+                "$ref": "#/components/schemas/Email"
+              },
+              "avatar": {
+                "$ref": "#/components/schemas/AvatarURL"
+              },
+              "userId": {
+                "$ref": "#/components/schemas/UserId"
+              }
+            }
           }
         }
       },
-      "Token": {
-        "type": "string",
-        "description": "JWT token",
-        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MmMxODQyM2NhZmFjMGVkNGYyMDYyZiIsImlhdCI6MTY4MDYyMDc1MCwiZXhwIjoxNjgwNzA3MTUwfQ.vpfUcfAEnlEXa_lpbtmfmk8leV2UAgIimyKr8FUssQM"
-      },
-      "User": {
+      "UpdateUserRequestInfo": {
+        "required": ["name", "preview"],
         "type": "object",
         "properties": {
           "name": {
             "$ref": "#/components/schemas/UserName"
           },
-          "email": {
-            "$ref": "#/components/schemas/Email"
+          "avatar": {
+            "$ref": "#/components/schemas/Avatar"
           }
         }
       },
-      "Avatar": {
-        "maxLength": 2097152,
-        "type": "string",
-        "format": "binary"
+      "UpdateUserResponseInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/components/schemas/UserName"
+                  },
+                  "avatar": {
+                    "$ref": "#/components/schemas/AvatarURL"
+                  }
+                }
+              }
+            }
+          }
+        }
       },
-      "AvatarURL": {
-        "type": "string",
-        "description": "Link to user's avatar",
-        "format": "uri",
-        "example": "https://res.cloudinary.com/db5awxaxs/image/upload/v1680438156/cld-sample-4.jpg"
+      "ShoppingList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ShoppingListItem"
+        }
+      },
+      "AddShoppingItem": {
+        "type": "object",
+        "properties": {
+          "strIngredient": {
+            "$ref": "#/components/schemas/StrIngredient"
+          },
+          "weight": {
+            "$ref": "#/components/schemas/Weight"
+          },
+          "image": {
+            "$ref": "#/components/schemas/Image"
+          },
+          "recipeId": {
+            "$ref": "#/components/schemas/RecipeID"
+          }
+        }
+      },
+      "ShoppingListItem": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/IngredientID"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/OwnerID"
+          },
+          "strIngredient": {
+            "$ref": "#/components/schemas/StrIngredient"
+          },
+          "weight": {
+            "$ref": "#/components/schemas/Weight"
+          },
+          "image": {
+            "$ref": "#/components/schemas/Image"
+          },
+          "recipeId": {
+            "$ref": "#/components/schemas/RecipeID"
+          }
+        }
+      },
+      "RemoveShoppingItem": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "_id": {
+            "$ref": "#/components/schemas/IngredientID"
+          },
+          "message": {
+            "type": "string",
+            "description": "Success remove message.",
+            "example": "Success remove ingredient with id - 642d4c0b84e8c727bbe171fa from shoping list"
+          }
+        }
       },
       "AddSubscribeListBody": {
         "type": "object",
@@ -2107,17 +2382,76 @@
           }
         }
       },
-      "UpdateUserInfoBody": {
-        "required": [
-          "name"
-        ],
+      "RecipesList": {
         "type": "object",
         "properties": {
-          "name": {
-            "$ref": "#/components/schemas/UserName"
+          "status": {
+            "$ref": "#/components/schemas/Status"
           },
-          "avatar": {
-            "$ref": "#/components/schemas/Avatar"
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "recipes": {
+            "type": "object",
+            "properties": {
+              "breakfast": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ResipeItem"
+                }
+              },
+              "vegan": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ResipeItem"
+                }
+              },
+              "miscellaneous": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ResipeItem"
+                }
+              },
+              "dessert": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ResipeItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ResipeItem": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/RecipeID"
+          },
+          "title": {
+            "$ref": "#/components/schemas/RecipeTitle"
+          },
+          "category": {
+            "$ref": "#/components/schemas/RecipeCategory"
+          },
+          "preview": {
+            "$ref": "#/components/schemas/RecipePreviewImg"
+          },
+          "fullImg": {
+            "$ref": "#/components/schemas/RecipeFullImg"
+          }
+        }
+      },
+      "CategoriesList": {
+        "type": "object",
+        "properties": {
+          "categoriesList": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The title of the item.",
+              "example": "Beef, Breakfast, Chicken, Dessert, Goat, Lamb, Miscellaneous, Pasta, Pork, Seafood, Side, Starter, Vegan, Vegetarian"
+            }
           }
         }
       },
@@ -2312,84 +2646,6 @@
           }
         }
       },
-      "AddToShoppingListBody": {
-        "type": "object",
-        "properties": {
-          "strIngredient": {
-            "type": "string",
-            "description": "Name of ingredient",
-            "example": "Meat"
-          },
-          "weight": {
-            "type": "string",
-            "description": "Quantity of ingredient",
-            "example": "400g"
-          },
-          "image": {
-            "type": "string",
-            "description": "Photo of ingredient",
-            "example": "download file"
-          },
-          "recipeId": {
-            "$ref": "#/components/schemas/RecipeID"
-          }
-        }
-      },
-      "RecipeID": {
-        "type": "string",
-        "description": "The unique identifier of the recipe",
-        "example": "640cd5ac2d9fecf12e8897f8"
-      },
-      "IngredientID": {
-        "type": "string",
-        "description": "The unique identifier of the ingredient",
-        "example": "642d4c0b84e8c727bbe171fa"
-      },
-      "OwnerID": {
-        "type": "string",
-        "description": "The unique identifier of the recipe",
-        "example": "642c18423cafac0ed4f2062f"
-      },
-      "SubscribeID": {
-        "type": "string",
-        "description": "The unique identifier of the recipe",
-        "example": "642d84c0588455f7fc7959c4"
-      },
-      "ShoppingList": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/ShoppingListItem"
-        }
-      },
-      "ShoppingListItem": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "$ref": "#/components/schemas/IngredientID"
-          },
-          "owner": {
-            "$ref": "#/components/schemas/OwnerID"
-          },
-          "strIngredient": {
-            "type": "string",
-            "description": "Ingredient's title",
-            "example": "Meat"
-          },
-          "image": {
-            "type": "string",
-            "description": "The URL of the image for the ingredient",
-            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
-          },
-          "weight": {
-            "type": "string",
-            "description": "Quantity of ingredient",
-            "example": "400g"
-          },
-          "recipeId": {
-            "$ref": "#/components/schemas/RecipeID"
-          }
-        }
-      },
       "RecipeTitle": {
         "type": "string",
         "description": "The name of the recipe",
@@ -2493,26 +2749,6 @@
           }
         }
       },
-      "ResponseRecipe": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "$ref": "#/components/schemas/RecipeID"
-          },
-          "title": {
-            "$ref": "#/components/schemas/RecipeTitle"
-          },
-          "category": {
-            "$ref": "#/components/schemas/RecipeCategory"
-          },
-          "preview": {
-            "$ref": "#/components/schemas/RecipePreviewImg"
-          },
-          "fullImg": {
-            "$ref": "#/components/schemas/RecipeFullImg"
-          }
-        }
-      },
       "ResponseOwnRecipe": {
         "type": "object",
         "properties": {
@@ -2548,50 +2784,6 @@
             "type": "string",
             "description": "The title of ingredient",
             "example": "Basil"
-          }
-        }
-      },
-      "ArrayRecipes": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "The status of responce",
-            "example": "success"
-          },
-          "code": {
-            "type": "string",
-            "description": "The code of responce",
-            "example": 200
-          },
-          "recipes": {
-            "type": "object",
-            "properties": {
-              "breakfast": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ResponseRecipe"
-                }
-              },
-              "vegan": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ResponseRecipe"
-                }
-              },
-              "miscellaneous": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ResponseRecipe"
-                }
-              },
-              "dessert": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ResponseRecipe"
-                }
-              }
-            }
           }
         }
       },
@@ -2651,10 +2843,7 @@
       },
       "SortOpts": {
         "type": "string",
-        "enum": [
-          "title",
-          "popular"
-        ],
+        "enum": ["title", "popular"],
         "description": "For \"title\" sort alphabetically, for \"popular\" most popular first",
         "example": "title"
       },
@@ -2662,39 +2851,6 @@
         "minimum": 1,
         "type": "integer",
         "default": 1
-      },
-      "Category": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "description": "The ID of the item.",
-            "example": "1"
-          },
-          "title": {
-            "type": "string",
-            "description": "The title of the item.",
-            "example": "Beef"
-          },
-          "thumb": {
-            "type": "string",
-            "description": "The URL to the thumbnail image of the item.",
-            "example": "https://www.themealdb.com/images/media/meals/thazgm1555350962.jpg"
-          },
-          "description": {
-            "type": "string",
-            "description": "A description of the item.",
-            "example": "A description of the item."
-          }
-        }
-      },
-      "CategoriesList": {
-        "type": "array",
-        "items": {
-          "type": "string",
-          "description": "The title of the item.",
-          "example": "Beef, Breakfast, Chicken, Dessert, Goat, Lamb, Miscellaneous, Pasta, Pork, Seafood, Side, Starter, Vegan, Vegetarian"
-        }
       }
     },
     "securitySchemes": {
