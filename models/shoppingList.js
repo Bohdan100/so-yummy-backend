@@ -19,7 +19,6 @@ const shoppingListSchema = new Schema(
     },
     image: {
       type: String,
-      require: true,
     },
     recipeId: {
       type: String,
