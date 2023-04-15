@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
+    "version": "1.0.0",
     "title": "So Yummy API docs",
-    "description": "The API for the So Yummy project",
-    "version": "1.0.0"
+    "description": "The API for the So Yummy project"
   },
   "servers": [
     {
@@ -762,7 +762,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipeFull"
+                  "$ref": "#/components/schemas/RecipeItemFullInfo"
                 }
               }
             }
@@ -851,7 +851,7 @@
             "schema": {
               "minimum": 1,
               "type": "integer",
-              "default": 12
+              "default": 8
             }
           },
           {
@@ -882,7 +882,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipesList"
+                  "$ref": "#/components/schemas/RecipesByCategoriesList"
                 }
               }
             }
@@ -987,15 +987,6 @@
               "enum": ["title", "popular"],
               "default": "popular"
             }
-          },
-          {
-            "name": "token",
-            "in": "header",
-            "description": "User's token",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Token"
-            }
           }
         ],
         "responses": {
@@ -1004,7 +995,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipesList"
+                  "$ref": "#/components/schemas/FavoriteList"
                 }
               }
             }
@@ -1056,7 +1047,7 @@
             "style": "simple",
             "explode": false,
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/RecipeID"
             }
           },
           {
@@ -1075,7 +1066,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipeFavorite"
+                  "$ref": "#/components/schemas/FavoriteBoolRecipe"
                 }
               }
             }
@@ -1138,16 +1129,7 @@
             "style": "simple",
             "explode": false,
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "token",
-            "in": "header",
-            "description": "User's token",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Token"
+              "$ref": "#/components/schemas/RecipeID"
             }
           }
         ],
@@ -1157,7 +1139,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FavoriteGeneralResponse"
+                  "$ref": "#/components/schemas/AddRecipeToFavorite"
                 }
               }
             }
@@ -1233,16 +1215,7 @@
             "style": "simple",
             "explode": false,
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "token",
-            "in": "header",
-            "description": "User's token",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Token"
+              "$ref": "#/components/schemas/RecipeID"
             }
           }
         ],
@@ -1252,7 +1225,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FavoriteDeleteResponse"
+                  "$ref": "#/components/schemas/DeleteRecipeFromFavorite"
                 }
               }
             }
@@ -1296,7 +1269,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/ownRecipe/": {
@@ -1327,15 +1305,6 @@
               "type": "integer",
               "default": 4
             }
-          },
-          {
-            "name": "token",
-            "in": "header",
-            "description": "User's token",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Token"
-            }
           }
         ],
         "responses": {
@@ -1344,7 +1313,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArrayOwnRecipes"
+                  "$ref": "#/components/schemas/OwnRecipeList"
                 }
               }
             }
@@ -1398,17 +1367,6 @@
       "post": {
         "tags": ["OwnRecipe"],
         "summary": "Add recipe to own user's recipes.",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "User's token",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Token"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1425,7 +1383,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArrayOwnRecipes"
+                  "$ref": "#/components/schemas/OwnNewRecipe"
                 }
               }
             }
@@ -1438,7 +1396,7 @@
                   "$ref": "#/components/schemas/InfoMessage"
                 },
                 "example": {
-                  "message": "Validate error"
+                  "message": "parameter is not allowed"
                 }
               }
             }
@@ -1477,20 +1435,20 @@
         ]
       }
     },
-    "/ownRecipe/{id}": {
+    "/ownRecipe/{recipeId}": {
       "get": {
         "tags": ["OwnRecipe"],
         "summary": "Get recipe by ID from own recipes.",
         "parameters": [
           {
-            "name": "id",
+            "name": "recipeId",
             "in": "path",
             "description": "Recipe's ID",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/RecipeID"
             }
           }
         ],
@@ -1500,20 +1458,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArrayOwnRecipes"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InfoMessage"
-                },
-                "example": {
-                  "message": "Bad Request"
+                  "$ref": "#/components/schemas/OwnRecipeById"
                 }
               }
             }
@@ -1539,7 +1484,7 @@
                   "$ref": "#/components/schemas/InfoMessage"
                 },
                 "example": {
-                  "message": "Recipe with  id: 640cd5ac2d9fecf12e8897f3 was found"
+                  "message": "Recipe not found"
                 }
               }
             }
@@ -1569,14 +1514,14 @@
         "summary": "Delete recipe by ID from own recipes.",
         "parameters": [
           {
-            "name": "id",
+            "name": "recipeId",
             "in": "path",
             "description": "Recipe's ID",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/RecipeID"
             }
           }
         ],
@@ -1590,19 +1535,6 @@
                 },
                 "example": {
                   "message": "Recipe with 640cd5ac2d9fecf12e8897f3 deleted"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request query",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InfoMessage"
-                },
-                "example": {
-                  "message": "Bad Request"
                 }
               }
             }
@@ -1658,32 +1590,6 @@
       "get": {
         "tags": ["Ingredients"],
         "summary": "Get list of ingredients.",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "$ref": "#/components/schemas/PageQuery"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": false,
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "minimum": 1,
-              "type": "integer",
-              "default": 8
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Returns the list of of ingredients title with id",
@@ -1793,7 +1699,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArrayIngredients"
+                  "$ref": "#/components/schemas/IngredientsByQuery"
                 }
               }
             }
@@ -1819,7 +1725,7 @@
                   "$ref": "#/components/schemas/InfoMessage"
                 },
                 "example": {
-                  "message": "Ingredient wss not found"
+                  "message": "Ingredient beea not found / Recipes with beea not found"
                 }
               }
             }
@@ -1845,7 +1751,7 @@
         ]
       }
     },
-    "/search/{type&query}": {
+    "/search{type&query}": {
       "get": {
         "tags": ["Search"],
         "summary": "Get list of recipes by title or ingredients.",
@@ -1874,7 +1780,7 @@
             }
           },
           {
-            "name": "limit",
+            "name": "perPage",
             "in": "query",
             "description": "Number of items per page",
             "required": false,
@@ -1893,7 +1799,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipesList"
+                  "$ref": "#/components/schemas/IngredientsByQuery"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Incorrect pagination params - type, query, page, perPage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfoMessage"
+                },
+                "example": {
+                  "message": "Incorrect pagination params"
                 }
               }
             }
@@ -1993,7 +1912,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ArrayOwnRecipes"
+                  "$ref": "#/components/schemas/PopularRecipesList"
                 }
               }
             }
@@ -2164,6 +2083,178 @@
         "type": "string",
         "description": "The unique identifier of the recipe",
         "example": "642d84c0588455f7fc7959c4"
+      },
+      "RecipeTitle": {
+        "type": "string",
+        "description": "The name of the recipe",
+        "example": "Home-made Mandazi"
+      },
+      "RecipeCategory": {
+        "type": "string",
+        "description": "The category of the recipe",
+        "example": "Breakfast"
+      },
+      "RecipeDescription": {
+        "type": "string",
+        "description": "Recipe's description",
+        "example": "A popular East African snack made with flour, coconut milk, sugar, and spices, fried until golden brown."
+      },
+      "RecipeTime": {
+        "type": "string",
+        "description": "The time required to prepare the recipe",
+        "example": "40"
+      },
+      "RecipePopularity": {
+        "type": "integer",
+        "description": "The popularity score of the recipe",
+        "example": 5
+      },
+      "RecipeFavorite": {
+        "type": "array",
+        "description": "An array of ingredients needed for the recipe",
+        "items": {
+          "type": "string",
+          "example": "640c2dd963a319ea671e367d"
+        }
+      },
+      "RecipeLike": {
+        "type": "array",
+        "description": "An array of ingredients needed for the recipe",
+        "items": {
+          "type": "string",
+          "example": "640c2dd963a319ea671e367d"
+        }
+      },
+      "RecipePreviewImg": {
+        "type": "string",
+        "description": "The URL of the preview image for the recipe",
+        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560624/cnkpymzd18llmlc9pedc.jpg"
+      },
+      "RecipeFullImg": {
+        "type": "string",
+        "description": "The URL of the preview image for the recipe",
+        "example": "https://www.themealdb.com/images/media/meals/utxryw1511721587.jpg"
+      },
+      "Area": {
+        "type": "string",
+        "description": "Product's title",
+        "example": "Kenyan"
+      },
+      "Instructions": {
+        "type": "string",
+        "description": "The cooking instructions for the recipe",
+        "example": "This is one recipe a lot of people have requested and I have tried to make it as simple as possible."
+      },
+      "Description": {
+        "type": "string",
+        "description": "The cooking instructions for the recipe",
+        "example": "A classic pie with tender chunks of steak."
+      },
+      "Thumb": {
+        "type": "string",
+        "description": "The URL of an image of the ingredient.",
+        "format": "uri",
+        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564914/tg9ml6cwphdrlhkz9u7o.png"
+      },
+      "Youtube": {
+        "type": "string",
+        "description": "The URL of an image of the ingredient.",
+        "format": "uri",
+        "example": "https://www.youtube.com/watch?v=oTw5tPt4KmA"
+      },
+      "Tags": {
+        "type": "array",
+        "description": "An array of tags",
+        "items": {
+          "type": "string",
+          "example": "Pie"
+        }
+      },
+      "CreatedAt": {
+        "type": "string",
+        "description": "The URL of an image of the ingredient.",
+        "format": "uri",
+        "example": "2023-03-11T19:25:33.242Z"
+      },
+      "UpdatedAt": {
+        "type": "string",
+        "description": "The URL of an image of the ingredient.",
+        "format": "uri",
+        "example": "2023-03-22T17:32:20.870Z"
+      },
+      "IngredientsShortList": {
+        "type": "array",
+        "description": "An array of tags",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "The id of the ingredient.",
+              "example": "640c2dd963a319ea671e3748"
+            },
+            "measure": {
+              "type": "string",
+              "description": "The weight of the ingredient.",
+              "example": "300g"
+            }
+          }
+        }
+      },
+      "Ingredient": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "The title of the ingredient.",
+                "example": "640c2dd963a319ea671e367e"
+              },
+              "ttl": {
+                "type": "string",
+                "description": "The title of the ingredient.",
+                "example": "Butter"
+              },
+              "desc": {
+                "type": "string",
+                "description": "A description of the ingredient.",
+                "example": "A dairy product made from churning cream or milk."
+              },
+              "t": {
+                "type": "string",
+                "description": "The type of the ingredient.",
+                "example": ""
+              },
+              "thb": {
+                "type": "string",
+                "description": "The type of the ingredient.",
+                "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564674/ovea5weymaecrnbwxuq9.png"
+              }
+            }
+          },
+          "measure": {
+            "type": "string",
+            "description": "The quantity of the ingredient.",
+            "example": "¼ cup"
+          }
+        }
+      },
+      "Total": {
+        "type": "number",
+        "description": "The number of available items",
+        "example": 8
+      },
+      "Page": {
+        "type": "number",
+        "description": "Current page in the collection",
+        "example": 1
+      },
+      "Limit": {
+        "type": "number",
+        "description": "The limit of items in the collection",
+        "example": 4
       },
       "RegisterCredentials": {
         "required": ["email", "name", "password"],
@@ -2455,49 +2546,14 @@
           }
         }
       },
-      "Ingredient": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "The title of the ingredient.",
-            "example": "Worcestershire Sauce"
-          },
-          "desc": {
-            "type": "string",
-            "description": "A description of the ingredient.",
-            "example": "A description of the ingredient."
-          },
-          "type": {
-            "type": "string",
-            "description": "The type of the ingredient.",
-            "example": "Sauce"
-          },
-          "thumb": {
-            "type": "string",
-            "description": "The URL of an image of the ingredient.",
-            "format": "uri",
-            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564914/tg9ml6cwphdrlhkz9u7o.png"
-          },
-          "measure": {
-            "type": "string",
-            "description": "The quantity of the ingredient.",
-            "example": "1tbsp"
-          }
-        }
-      },
-      "RecipeFull": {
+      "RecipeItemFullInfo": {
         "type": "object",
         "properties": {
           "status": {
-            "type": "string",
-            "description": "The status of responce",
-            "example": "success"
+            "$ref": "#/components/schemas/Status"
           },
           "code": {
-            "type": "string",
-            "description": "The code of responce",
-            "example": 200
+            "$ref": "#/components/schemas/Code"
           },
           "recipe": {
             "type": "object",
@@ -2512,24 +2568,19 @@
                 "$ref": "#/components/schemas/RecipeCategory"
               },
               "area": {
-                "type": "string",
-                "description": "Product's title",
-                "example": "Kenyan"
+                "$ref": "#/components/schemas/Area"
               },
               "instructions": {
-                "type": "string",
-                "description": "The cooking instructions for the recipe",
-                "example": "This is one recipe a lot of people have requested and I have tried to make it as simple as possible."
+                "$ref": "#/components/schemas/Instructions"
               },
               "description": {
                 "$ref": "#/components/schemas/RecipeDescription"
               },
-              "ingridients": {
-                "type": "array",
-                "description": "An array of ingredients needed for the recipe",
-                "items": {
-                  "$ref": "#/components/schemas/Ingredient"
-                }
+              "thumb": {
+                "$ref": "#/components/schemas/Thumb"
+              },
+              "preview": {
+                "$ref": "#/components/schemas/Thumb"
               },
               "time": {
                 "$ref": "#/components/schemas/RecipeTime"
@@ -2537,69 +2588,195 @@
               "popularity": {
                 "$ref": "#/components/schemas/RecipePopularity"
               },
-              "favorite": {
+              "favorites": {
                 "$ref": "#/components/schemas/RecipeFavorite"
               },
-              "like": {
+              "likes": {
                 "$ref": "#/components/schemas/RecipeLike"
               },
-              "previewImg": {
-                "$ref": "#/components/schemas/RecipePreviewImg"
+              "ingridients": {
+                "type": "array",
+                "description": "An array of ingredients needed for the recipe",
+                "items": {
+                  "$ref": "#/components/schemas/Ingredient"
+                }
               }
             }
           }
         }
       },
-      "AddOwnRecipeBody": {
+      "RecipesByCategoriesList": {
         "type": "object",
         "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/RecipesByCategoriesItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RecipesByCategoriesItem": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/RecipeID"
+          },
           "title": {
             "$ref": "#/components/schemas/RecipeTitle"
           },
           "category": {
             "$ref": "#/components/schemas/RecipeCategory"
           },
-          "description": {
-            "$ref": "#/components/schemas/RecipeDescription"
+          "area": {
+            "$ref": "#/components/schemas/Area"
           },
           "instructions": {
-            "type": "string",
-            "description": "The cooking instructions for the recipe",
-            "example": "The cooking instructions for the recipe"
+            "$ref": "#/components/schemas/Instructions"
           },
-          "ingredients": {
-            "type": "array",
-            "description": "An array of ingredients needed for the recipe",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "$ref": "#/components/schemas/RecipeID"
-                },
-                "measure": {
-                  "type": "string",
-                  "example": "400g"
-                }
-              }
-            }
+          "description": {
+            "$ref": "#/components/schemas/Description"
+          },
+          "thumb": {
+            "$ref": "#/components/schemas/Thumb"
+          },
+          "preview": {
+            "$ref": "#/components/schemas/RecipePreviewImg"
           },
           "time": {
             "$ref": "#/components/schemas/RecipeTime"
           },
-          "fullImage": {
-            "type": "string",
-            "description": "File object of cooked meal",
-            "example": "File Object"
+          "popularity": {
+            "$ref": "#/components/schemas/RecipePopularity"
+          },
+          "favorites": {
+            "$ref": "#/components/schemas/RecipeFavorite"
+          },
+          "likes": {
+            "$ref": "#/components/schemas/RecipeLike"
+          },
+          "youtube": {
+            "$ref": "#/components/schemas/Youtube"
+          },
+          "tags": {
+            "$ref": "#/components/schemas/Tags"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          },
+          "ingredients": {
+            "$ref": "#/components/schemas/IngredientsShortList"
           }
         }
       },
-      "FavoriteGeneralResponse": {
+      "FavoriteList": {
         "type": "object",
         "properties": {
           "status": {
-            "type": "string",
-            "description": "Status of responce",
-            "example": "success"
+            "$ref": "#/components/schemas/Status"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FavoriteItem"
+                }
+              }
+            }
+          },
+          "total": {
+            "$ref": "#/components/schemas/Total"
+          },
+          "page": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "limit": {
+            "$ref": "#/components/schemas/Limit"
+          }
+        }
+      },
+      "FavoriteItem": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/RecipeID"
+          },
+          "recipe": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "$ref": "#/components/schemas/IngredientID"
+              },
+              "title": {
+                "$ref": "#/components/schemas/RecipeTitle"
+              },
+              "category": {
+                "$ref": "#/components/schemas/RecipeCategory"
+              },
+              "description": {
+                "$ref": "#/components/schemas/Description"
+              },
+              "thumb": {
+                "$ref": "#/components/schemas/Thumb"
+              },
+              "preview": {
+                "$ref": "#/components/schemas/RecipePreviewImg"
+              },
+              "time": {
+                "$ref": "#/components/schemas/RecipeTime"
+              }
+            }
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          }
+        }
+      },
+      "FavoriteBoolRecipe": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "boolean",
+                "description": "Show true or false if recipe is favorite",
+                "example": true
+              }
+            }
+          }
+        }
+      },
+      "AddRecipeToFavorite": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
           },
           "code": {
             "type": "string",
@@ -2615,11 +2792,11 @@
           "message": {
             "type": "string",
             "description": "Status of responce",
-            "example": "Recipe with 640cd5ac2d9fecf12e889864 was added to favorites"
+            "example": "Recipe with 640cd5ac2d9fecf12e8897f8 was added to favorites"
           }
         }
       },
-      "FavoriteDeleteResponse": {
+      "DeleteRecipeFromFavorite": {
         "type": "object",
         "properties": {
           "status": {
@@ -2642,56 +2819,42 @@
           "message": {
             "type": "string",
             "description": "Status of responce",
-            "example": "Recipe with id - 640cd5ac2d9fecf12e889864 deleted from favorites"
+            "example": "Recipe with id - 640cd5ac2d9fecf12e8897f8 deleted from favorites"
           }
         }
       },
-      "RecipeTitle": {
-        "type": "string",
-        "description": "The name of the recipe",
-        "example": "Home-made Mandazi"
+      "OwnRecipeList": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OwnRecipeItem"
+                }
+              }
+            }
+          },
+          "total": {
+            "$ref": "#/components/schemas/Total"
+          },
+          "page": {
+            "$ref": "#/components/schemas/Page"
+          },
+          "limit": {
+            "$ref": "#/components/schemas/Limit"
+          }
+        }
       },
-      "RecipeCategory": {
-        "type": "string",
-        "description": "The category of the recipe",
-        "example": "Breakfast"
-      },
-      "RecipeDescription": {
-        "type": "string",
-        "description": "Recipe's description",
-        "example": "A popular East African snack made with flour, coconut milk, sugar, and spices, fried until golden brown."
-      },
-      "RecipeTime": {
-        "type": "string",
-        "description": "The time required to prepare the recipe",
-        "example": "40"
-      },
-      "RecipePopularity": {
-        "type": "integer",
-        "description": "The popularity score of the recipe",
-        "example": 5
-      },
-      "RecipeFavorite": {
-        "type": "boolean",
-        "description": "Whether or not the recipe has been marked as a favorite by the user",
-        "example": true
-      },
-      "RecipeLike": {
-        "type": "boolean",
-        "description": "Whether or not the recipe has been liked by the user",
-        "example": "a"
-      },
-      "RecipePreviewImg": {
-        "type": "string",
-        "description": "The URL of the preview image for the recipe",
-        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560624/cnkpymzd18llmlc9pedc.jpg"
-      },
-      "RecipeFullImg": {
-        "type": "string",
-        "description": "The URL of the preview image for the recipe",
-        "example": "https://www.themealdb.com/images/media/meals/utxryw1511721587.jpg"
-      },
-      "IngredientShort": {
+      "OwnRecipeItem": {
         "type": "object",
         "properties": {
           "_id": {
@@ -2704,14 +2867,15 @@
             "$ref": "#/components/schemas/RecipeCategory"
           },
           "instructions": {
-            "type": "string",
-            "description": "The cooking instructions for the recipe",
-            "example": "This is one recipe a lot of people have requested and I have tried to make it as simple as possible."
+            "$ref": "#/components/schemas/Instructions"
           },
           "description": {
-            "$ref": "#/components/schemas/RecipeDescription"
+            "$ref": "#/components/schemas/Description"
           },
-          "previewImg": {
+          "thumb": {
+            "$ref": "#/components/schemas/Thumb"
+          },
+          "preview": {
             "$ref": "#/components/schemas/RecipePreviewImg"
           },
           "time": {
@@ -2721,40 +2885,34 @@
             "$ref": "#/components/schemas/RecipePopularity"
           },
           "favorites": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RecipeID"
-            }
+            "$ref": "#/components/schemas/RecipeFavorite"
           },
           "likes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RecipeID"
-            }
+            "$ref": "#/components/schemas/RecipeLike"
+          },
+          "youtube": {
+            "$ref": "#/components/schemas/Youtube"
+          },
+          "tags": {
+            "$ref": "#/components/schemas/Tags"
+          },
+          "ingredients": {
+            "$ref": "#/components/schemas/IngredientsShortList"
           },
           "owner": {
-            "type": "string",
-            "description": "User that add this ingredient",
-            "example": "642ae5f518c0b9fae898c113"
+            "$ref": "#/components/schemas/OwnerID"
           },
           "createdAt": {
-            "type": "string",
-            "description": "User that add this ingredient",
-            "example": "2023-04-03T19:30:26.790Z"
+            "$ref": "#/components/schemas/CreatedAt"
           },
           "updatedAt": {
-            "type": "string",
-            "description": "User that add this ingredient",
-            "example": "2023-04-03T19:30:26.790Z"
+            "$ref": "#/components/schemas/UpdatedAt"
           }
         }
       },
-      "ResponseOwnRecipe": {
+      "AddOwnRecipeBody": {
         "type": "object",
         "properties": {
-          "_id": {
-            "$ref": "#/components/schemas/RecipeID"
-          },
           "title": {
             "$ref": "#/components/schemas/RecipeTitle"
           },
@@ -2764,11 +2922,229 @@
           "description": {
             "$ref": "#/components/schemas/RecipeDescription"
           },
+          "instructions": {
+            "$ref": "#/components/schemas/Instructions"
+          },
+          "ingredients": {
+            "$ref": "#/components/schemas/IngredientsShortList"
+          },
+          "time": {
+            "$ref": "#/components/schemas/RecipeTime"
+          }
+        }
+      },
+      "OwnNewRecipe": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "$ref": "#/components/schemas/RecipeTitle"
+              },
+              "category": {
+                "$ref": "#/components/schemas/RecipeCategory"
+              },
+              "instructions": {
+                "$ref": "#/components/schemas/Instructions"
+              },
+              "description": {
+                "$ref": "#/components/schemas/RecipeDescription"
+              },
+              "thumb": {
+                "$ref": "#/components/schemas/Thumb"
+              },
+              "preview": {
+                "$ref": "#/components/schemas/RecipePreviewImg"
+              },
+              "time": {
+                "$ref": "#/components/schemas/RecipeTime"
+              },
+              "popularity": {
+                "$ref": "#/components/schemas/RecipePopularity"
+              },
+              "favorites": {
+                "$ref": "#/components/schemas/RecipeFavorite"
+              },
+              "likes": {
+                "$ref": "#/components/schemas/RecipeLike"
+              },
+              "youtube": {
+                "$ref": "#/components/schemas/Youtube"
+              },
+              "tags": {
+                "$ref": "#/components/schemas/Tags"
+              },
+              "ingredients": {
+                "$ref": "#/components/schemas/IngredientsShortList"
+              },
+              "owner": {
+                "$ref": "#/components/schemas/OwnerID"
+              },
+              "_id": {
+                "$ref": "#/components/schemas/RecipeID"
+              },
+              "createdAt": {
+                "$ref": "#/components/schemas/CreatedAt"
+              },
+              "updatedAt": {
+                "$ref": "#/components/schemas/UpdatedAt"
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "description": "Inform message about successfull create",
+            "example": "Create succesfull"
+          }
+        }
+      },
+      "OwnRecipeById": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Inform message about successfull create",
+            "example": "Recipe with  id: 640cd5ac2d9fecf12e8897f8 was found"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "$ref": "#/components/schemas/RecipeID"
+                  },
+                  "title": {
+                    "$ref": "#/components/schemas/RecipeTitle"
+                  },
+                  "category": {
+                    "$ref": "#/components/schemas/RecipeCategory"
+                  },
+                  "instructions": {
+                    "$ref": "#/components/schemas/Instructions"
+                  },
+                  "description": {
+                    "$ref": "#/components/schemas/Description"
+                  },
+                  "thumb": {
+                    "$ref": "#/components/schemas/Thumb"
+                  },
+                  "preview": {
+                    "$ref": "#/components/schemas/RecipePreviewImg"
+                  },
+                  "time": {
+                    "$ref": "#/components/schemas/RecipeTime"
+                  },
+                  "popularity": {
+                    "$ref": "#/components/schemas/RecipePopularity"
+                  },
+                  "favorites": {
+                    "$ref": "#/components/schemas/RecipeFavorite"
+                  },
+                  "likes": {
+                    "$ref": "#/components/schemas/RecipeLike"
+                  },
+                  "youtube": {
+                    "$ref": "#/components/schemas/Youtube"
+                  },
+                  "tags": {
+                    "$ref": "#/components/schemas/Tags"
+                  },
+                  "ingredients": {
+                    "$ref": "#/components/schemas/IngredientsShortList"
+                  },
+                  "owner": {
+                    "$ref": "#/components/schemas/OwnerID"
+                  },
+                  "createdAt": {
+                    "$ref": "#/components/schemas/CreatedAt"
+                  },
+                  "updatedAt": {
+                    "$ref": "#/components/schemas/UpdatedAt"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "IngredientsByQuery": {
+        "type": "object",
+        "properties": {
+          "totalHits": {
+            "type": "string",
+            "description": "The total of ingredients",
+            "example": 5
+          },
+          "meals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IngredientRecipeItem"
+            }
+          }
+        }
+      },
+      "IngredientRecipeItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/RecipeID"
+          },
+          "title": {
+            "$ref": "#/components/schemas/RecipeTitle"
+          },
+          "category": {
+            "$ref": "#/components/schemas/RecipeCategory"
+          },
+          "area": {
+            "$ref": "#/components/schemas/Area"
+          },
+          "instructions": {
+            "$ref": "#/components/schemas/Instructions"
+          },
+          "description": {
+            "$ref": "#/components/schemas/RecipeDescription"
+          },
+          "thumb": {
+            "$ref": "#/components/schemas/Thumb"
+          },
           "preview": {
             "$ref": "#/components/schemas/RecipePreviewImg"
           },
           "time": {
             "$ref": "#/components/schemas/RecipeTime"
+          },
+          "popularity": {
+            "$ref": "#/components/schemas/RecipePopularity"
+          },
+          "favorites": {
+            "$ref": "#/components/schemas/RecipeFavorite"
+          },
+          "likes": {
+            "$ref": "#/components/schemas/RecipeLike"
+          },
+          "youtube": {
+            "$ref": "#/components/schemas/Youtube"
+          },
+          "tags": {
+            "$ref": "#/components/schemas/Tags"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          },
+          "ingredients": {
+            "$ref": "#/components/schemas/IngredientsShortList"
           }
         }
       },
@@ -2787,65 +3163,58 @@
           }
         }
       },
-      "ArrayOwnRecipes": {
+      "PopularRecipesList": {
         "type": "object",
         "properties": {
-          "recipes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ResponseOwnRecipe"
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PopularRecipeItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PopularRecipeItem": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/RecipeID"
+          },
+          "recipe": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "$ref": "#/components/schemas/RecipeID"
+              },
+              "title": {
+                "$ref": "#/components/schemas/RecipeTitle"
+              },
+              "description": {
+                "$ref": "#/components/schemas/Description"
+              },
+              "thumb": {
+                "$ref": "#/components/schemas/Thumb"
+              },
+              "preview": {
+                "$ref": "#/components/schemas/RecipePreviewImg"
+              }
             }
           },
-          "total": {
-            "$ref": "#/components/schemas/TotalAvailable"
-          },
-          "page": {
-            "$ref": "#/components/schemas/Page"
-          },
-          "limit": {
+          "amount": {
             "$ref": "#/components/schemas/Limit"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortOpts"
           }
         }
-      },
-      "ArrayIngredients": {
-        "type": "object",
-        "properties": {
-          "totalHits": {
-            "type": "string",
-            "description": "The total of ingredients",
-            "example": 5
-          },
-          "meals": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IngredientShort"
-            }
-          }
-        }
-      },
-      "TotalAvailable": {
-        "type": "number",
-        "description": "The number of available items",
-        "example": 45
-      },
-      "Page": {
-        "type": "number",
-        "description": "Current page in the collection",
-        "example": 2
-      },
-      "Limit": {
-        "type": "number",
-        "description": "The limit of items in the collection",
-        "example": 6
-      },
-      "SortOpts": {
-        "type": "string",
-        "enum": ["title", "popular"],
-        "description": "For \"title\" sort alphabetically, for \"popular\" most popular first",
-        "example": "title"
       },
       "PageQuery": {
         "minimum": 1,
