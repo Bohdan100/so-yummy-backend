@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0",
     "title": "So Yummy API docs",
-    "description": "The API for the So Yummy project"
+    "description": "The API for the So Yummy project",
+    "version": "1.0.0"
   },
   "servers": [
     {
@@ -13,7 +13,9 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Register a new user.",
         "requestBody": {
           "content": {
@@ -67,7 +69,9 @@
     },
     "/auth/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Login user.",
         "requestBody": {
           "content": {
@@ -121,7 +125,9 @@
     },
     "/auth/logout": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Logout user.",
         "parameters": [
           {
@@ -161,7 +167,9 @@
     },
     "/auth/current": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Get user's email and name.",
         "parameters": [
           {
@@ -208,7 +216,9 @@
     },
     "/auth/edit": {
       "patch": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Update user's avatar and name.",
         "parameters": [
           {
@@ -278,7 +288,9 @@
     },
     "/shopping-list/": {
       "get": {
-        "tags": ["Shopping-list"],
+        "tags": [
+          "Shopping-list"
+        ],
         "summary": "Get user's shopping list.",
         "parameters": [
           {
@@ -323,7 +335,9 @@
         ]
       },
       "post": {
-        "tags": ["Shopping-list"],
+        "tags": [
+          "Shopping-list"
+        ],
         "summary": "Add own ingredient to user's shopping list.",
         "parameters": [
           {
@@ -406,7 +420,9 @@
     },
     "/shopping-list/{id}": {
       "delete": {
-        "tags": ["Shopping-list"],
+        "tags": [
+          "Shopping-list"
+        ],
         "summary": "Remove own ingredient by ID from shopping list.",
         "parameters": [
           {
@@ -490,7 +506,9 @@
     },
     "/subscribe/": {
       "post": {
-        "tags": ["Subscribe"],
+        "tags": [
+          "Subscribe"
+        ],
         "summary": "Email subscription to letters with news.",
         "requestBody": {
           "content": {
@@ -575,7 +593,9 @@
     },
     "/recipes/": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "summary": "Get list of recipes.",
         "parameters": [
           {
@@ -672,7 +692,9 @@
     },
     "/recipes/category-list": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "summary": "Get list of all categories of recipes.",
         "parameters": [
           {
@@ -732,7 +754,9 @@
     },
     "/recipes/{recipeId}": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "summary": "Get recipe by ID from recipe's list.",
         "parameters": [
           {
@@ -816,7 +840,9 @@
     },
     "/recipes/categories/{categoryName}": {
       "get": {
-        "tags": ["Recipes"],
+        "tags": [
+          "Recipes"
+        ],
         "summary": "Get list of recipes by category's name.",
         "parameters": [
           {
@@ -862,7 +888,10 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "enum": ["title", "popular"],
+              "enum": [
+                "title",
+                "popular"
+              ],
               "default": "popular"
             }
           },
@@ -949,7 +978,9 @@
     },
     "/favorite/": {
       "get": {
-        "tags": ["Favorite"],
+        "tags": [
+          "Favorite"
+        ],
         "summary": "Get list of favorite recipes for current user.",
         "parameters": [
           {
@@ -984,7 +1015,10 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "enum": ["title", "popular"],
+              "enum": [
+                "title",
+                "popular"
+              ],
               "default": "popular"
             }
           }
@@ -1036,7 +1070,9 @@
     },
     "/favorite/{recipeId}": {
       "get": {
-        "tags": ["Favorite"],
+        "tags": [
+          "Favorite"
+        ],
         "summary": "Get favorite recipe by Id for current user.",
         "parameters": [
           {
@@ -1118,7 +1154,9 @@
         ]
       },
       "post": {
-        "tags": ["Favorite"],
+        "tags": [
+          "Favorite"
+        ],
         "summary": "Toggle favorite recipe's status by ID.",
         "parameters": [
           {
@@ -1204,7 +1242,9 @@
         ]
       },
       "delete": {
-        "tags": ["Favorite"],
+        "tags": [
+          "Favorite"
+        ],
         "summary": "Remove recipe by ID from favorite list.",
         "parameters": [
           {
@@ -1279,7 +1319,9 @@
     },
     "/ownRecipe/": {
       "get": {
-        "tags": ["OwnRecipe"],
+        "tags": [
+          "OwnRecipe"
+        ],
         "summary": "Get list of own user's recipes.",
         "parameters": [
           {
@@ -1365,7 +1407,9 @@
         ]
       },
       "post": {
-        "tags": ["OwnRecipe"],
+        "tags": [
+          "OwnRecipe"
+        ],
         "summary": "Add recipe to own user's recipes.",
         "requestBody": {
           "content": {
@@ -1437,7 +1481,9 @@
     },
     "/ownRecipe/{recipeId}": {
       "get": {
-        "tags": ["OwnRecipe"],
+        "tags": [
+          "OwnRecipe"
+        ],
         "summary": "Get recipe by ID from own recipes.",
         "parameters": [
           {
@@ -1510,7 +1556,9 @@
         ]
       },
       "delete": {
-        "tags": ["OwnRecipe"],
+        "tags": [
+          "OwnRecipe"
+        ],
         "summary": "Delete recipe by ID from own recipes.",
         "parameters": [
           {
@@ -1588,7 +1636,9 @@
     },
     "/ingredients/list": {
       "get": {
-        "tags": ["Ingredients"],
+        "tags": [
+          "Ingredients"
+        ],
         "summary": "Get list of ingredients.",
         "responses": {
           "200": {
@@ -1653,7 +1703,9 @@
     },
     "/ingredients/{query}": {
       "get": {
-        "tags": ["Ingredients"],
+        "tags": [
+          "Ingredients"
+        ],
         "summary": "Get list of recipes by ingredient's name.",
         "parameters": [
           {
@@ -1751,21 +1803,33 @@
         ]
       }
     },
-    "/search{type&query}": {
+    "/search": {
       "get": {
-        "tags": ["Search"],
+        "tags": [
+          "Search"
+        ],
         "summary": "Get list of recipes by title or ingredients.",
         "parameters": [
           {
-            "name": "type&query",
-            "in": "path",
-            "description": "Search recipe list by recipe's title or ingredient value",
+            "name": "query",
+            "in": "query",
+            "description": "Recipe's title value or ingredient value",
             "required": true,
-            "style": "simple",
-            "explode": false,
+            "style": "form",
+            "explode": true,
             "schema": {
-              "type": "string",
-              "default": "type=Ingredients&query=milk"
+              "$ref": "#/components/schemas/TitleOrIngredientValue"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Recipe's title value or ingredient value",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "$ref": "#/components/schemas/TypeTitleOrIngredients"
             }
           },
           {
@@ -1866,7 +1930,9 @@
     },
     "/popular-recipes": {
       "get": {
-        "tags": ["Popular-recipes"],
+        "tags": [
+          "Popular-recipes"
+        ],
         "summary": "Get list of popular recipes.",
         "parameters": [
           {
@@ -1901,7 +1967,10 @@
             "style": "form",
             "explode": true,
             "schema": {
-              "enum": ["title", "popular"],
+              "enum": [
+                "title",
+                "popular"
+              ],
               "default": "popular"
             }
           }
@@ -2257,7 +2326,11 @@
         "example": 4
       },
       "RegisterCredentials": {
-        "required": ["email", "name", "password"],
+        "required": [
+          "email",
+          "name",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -2272,7 +2345,10 @@
         }
       },
       "LoginCredentials": {
-        "required": ["email", "password"],
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -2348,7 +2424,10 @@
         }
       },
       "UpdateUserRequestInfo": {
-        "required": ["name", "preview"],
+        "required": [
+          "name",
+          "preview"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -3220,6 +3299,14 @@
         "minimum": 1,
         "type": "integer",
         "default": 1
+      },
+      "TitleOrIngredientValue": {
+        "type": "string",
+        "default": "milk"
+      },
+      "TypeTitleOrIngredients": {
+        "type": "string",
+        "default": "Ingredients"
       }
     },
     "securitySchemes": {
