@@ -1,14 +1,20 @@
-const path = require("path");
+const path = require('path');
 const categoriesList = require(path.join(
   __dirname,
-  "..",
-  "..",
-  "data",
-  "categoriesList"
+  '..',
+  '..',
+  'data',
+  'categoriesList'
 ));
 
 const getCategoriesList = async (req, res) => {
-  return res.status(200).json({ categoriesList: categoriesList.sort() });
+  return res.json({
+    status: 'success',
+    code: 200,
+    data: {
+      result: categoriesList.sort(),
+    },
+  });
 };
 
 module.exports = getCategoriesList;
