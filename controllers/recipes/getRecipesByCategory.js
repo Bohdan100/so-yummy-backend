@@ -1,5 +1,5 @@
-const { Recipe } = require("../../models");
-const { HttpError, setPaginationSlice } = require("../../helpers");
+const { Recipe } = require('../../models');
+const { HttpError, setPaginationSlice } = require('../../helpers');
 
 const getRecipesByCategory = async (req, res) => {
   const { categoryName } = req.params;
@@ -9,14 +9,14 @@ const getRecipesByCategory = async (req, res) => {
   const result = await Recipe.find({ category: capitilizedCategory });
 
   if (result.length === 0) {
-    throw HttpError(404, "Not found recipes by such category");
+    throw HttpError(404, 'Not found recipes by such category');
   }
 
   const { page = 1, limit = 8 } = req.query;
 
   if (result.length === 0) {
     return res.json({
-      status: "success",
+      status: 'success',
       code: 200,
       data: {
         result: result,
@@ -27,14 +27,16 @@ const getRecipesByCategory = async (req, res) => {
 
   const pagination = setPaginationSlice(page, limit, result.length);
   if (!pagination) {
-    throw HttpError(400, "Incorrect pagination params");
+    throw HttpError(400, 'Incorrect pagination params');
   }
 
+  const slicedResult = result.slice(pagination.start, pagination.end);
+
   res.json({
-    status: "success",
+    status: 'success',
     code: 200,
     data: {
-      result: result.slice(pagination.start, pagination.end),
+      slicedResult,
     },
     total: result.length,
     page,

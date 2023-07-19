@@ -8,12 +8,11 @@ const categoriesList = require(path.join(
 ));
 
 const getCategoriesList = async (req, res) => {
+  const result = categoriesList.sort();
   return res.json({
     status: 'success',
     code: 200,
-    data: {
-      result: categoriesList.sort(),
-    },
+    data: result,
   });
 };
 

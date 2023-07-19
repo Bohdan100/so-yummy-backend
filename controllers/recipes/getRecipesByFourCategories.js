@@ -39,7 +39,7 @@ const getRecipesByFourCategories = async (req, res) => {
   res.status(200).json({
     status: 'success',
     code: 200,
-    data: { result: { breakfast, vegan, miscellaneous, dessert } },
+    data: { breakfast, vegan, miscellaneous, dessert },
   });
 };
 
