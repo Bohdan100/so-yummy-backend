@@ -35,9 +35,8 @@ const getRecipesByCategory = async (req, res) => {
   res.json({
     status: 'success',
     code: 200,
-    data: {
-      slicedResult,
-    },
+    data: slicedResult,
+
     total: result.length,
     page,
     limit,
