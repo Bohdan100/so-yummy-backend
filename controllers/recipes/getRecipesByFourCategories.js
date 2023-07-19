@@ -2,7 +2,6 @@ const { Recipe } = require('../../models');
 const { HttpError, getListRecipe } = require('../../helpers');
 
 const getRecipesByFourCategories = async (req, res) => {
-
   const { count = 1 } = req.query;
   const options = [
     { $sample: { size: Number(count) } },
@@ -17,7 +16,6 @@ const getRecipesByFourCategories = async (req, res) => {
       },
     },
   ];
-
 
   const result = await Recipe.aggregate([
     {
@@ -41,7 +39,7 @@ const getRecipesByFourCategories = async (req, res) => {
   res.status(200).json({
     status: 'success',
     code: 200,
-    recipes: { breakfast, vegan, miscellaneous, dessert },
+    data: { breakfast, vegan, miscellaneous, dessert },
   });
 };
 
