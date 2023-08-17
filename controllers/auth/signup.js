@@ -22,7 +22,7 @@ const signup = async (req, res) => {
     id: newUser._id,
   };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
   newUser.token = token;
   await newUser.save();
 
