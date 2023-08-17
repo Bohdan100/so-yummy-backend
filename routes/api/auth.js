@@ -13,6 +13,7 @@ const router = express.Router();
 router.post("/signup", validateBody(userJoiRegisterSchema), ctrl.signup);
 router.post("/login", validateBody(userJoiLoginSchema), ctrl.login);
 router.get("/current", auth, ctrl.getCurrentUser);
+router.get("/refresh", auth, ctrl.refresh);
 router.get("/logout", auth, ctrl.logout);
 router.patch(
   "/edit",
